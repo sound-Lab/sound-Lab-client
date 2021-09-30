@@ -5,14 +5,24 @@ import styled from 'styled-components';
 import theme from '../../theme';
 
 const StyledButton = styled.button`
-  border-radius: 10px;
-  border: none;
-  margin: auto;
   width: ${(props) => props.width + 'px'};
   height: ${(props) => props.height + 'px'};
+  margin: auto;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+  font-size: large;
   background-color: ${(props) => props.buttonColor};
   color: white;
-  font-size: large;
+  transition-property: scale, translateY;
+  transition: scale 300ms ease-in;
+
+  &:hover {
+    transform: scale(0.97);
+    opacity: 80%;
+    background-color: ${({ theme }) => theme.background.modal};
+    color: ${({ theme }) => theme.buttonColors.main};
+  }
 `;
 
 function Button({ onClick, text, buttonColor, width, height, disabled }) {
