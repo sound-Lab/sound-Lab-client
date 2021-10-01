@@ -8,12 +8,14 @@ import theme from './theme';
 import GlobalStyle from './theme/global';
 
 import Landing from './page/Landing';
+import Header from './components/Header';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Wrapper>
+        <Header />
         <ModalProvider>
           <Switch>
             <Route exact path="/">
