@@ -14,8 +14,6 @@ const StyledButton = styled.button`
   font-size: large;
   background-color: ${(props) => props.buttonColor};
   color: white;
-  transition-property: scale, translateY;
-  transition: scale 300ms ease-in;
 
   &:hover {
     transform: scale(0.97);
@@ -40,8 +38,8 @@ function Button({ onClick, text, buttonColor, width, height, disabled }) {
 }
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
   buttonColor: PropTypes.oneOf(Object.values(theme.background)),
   height: PropTypes.number,
   width: PropTypes.number,
@@ -49,9 +47,9 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  buttonColor: theme.buttonColors.main,
   width: 100,
   height: 50,
+  buttonColor: theme.buttonColors.main,
   disabled: false,
 };
 
