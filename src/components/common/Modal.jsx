@@ -2,22 +2,22 @@ import React, { useRef, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
-import { ModalContext } from '../../../context/ModalContext';
-import Button from '../Button';
+import { ModalContext } from '../../context/ModalContext';
+import Button from './Button';
 
-const Modal = () => {
+function Modal() {
   const { isModalOpen, handleModal, modalContent } = useContext(ModalContext);
   const modalRef = useRef();
 
-  const clickModalWrapper = (ev) => {
+  function clickModalWrapper(ev) {
     if (!modalRef.current || modalRef.current.contains(ev.target)) {
       return;
     }
 
     handleModal(null);
-  };
+  }
 
-  const showModal = () => {
+  function showModal() {
     if (!isModalOpen) {
       return null;
     }
@@ -30,10 +30,10 @@ const Modal = () => {
         </Wrapper>
       </ModalWrapper>
     );
-  };
+  }
 
   return <>{createPortal(showModal(), document.getElementById('modal'))}</>;
-};
+}
 
 const ModalWrapper = styled.div`
   z-index: 1;
@@ -43,7 +43,7 @@ const ModalWrapper = styled.div`
   height: 100%;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.2);
+  background: ${({ theme }) => theme.grayColors.mediumGray};
 `;
 
 const Wrapper = styled.div`
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
   width: 200px;
   height: 300px;
   padding: 30px;
-  background: whitesmoke;
+  background: ${({ theme }) => theme.grayColors.white};
 `;
 
 export default Modal;

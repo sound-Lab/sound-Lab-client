@@ -6,17 +6,17 @@ import Modal from '../components/common/Modal';
 const ModalContext = createContext();
 const { Provider } = ModalContext;
 
-const ModalProvider = ({ children }) => {
-  const [isModalOpen, setIsModalOpened] = useState(false);
+function ModalProvider({ children }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-  const handleModal = (content) => {
-    setIsModalOpened(!isModalOpen);
+  function handleModal(content) {
+    setIsModalOpen(!isModalOpen);
 
     if (content) {
       setModalContent(content);
     }
-  };
+  }
 
   return (
     <Provider value={{ isModalOpen, handleModal, modalContent }}>
@@ -24,7 +24,7 @@ const ModalProvider = ({ children }) => {
       <Modal />
     </Provider>
   );
-};
+}
 
 ModalProvider.propTypes = {
   children: PropTypes.node.isRequired,
