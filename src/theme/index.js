@@ -1,20 +1,23 @@
-import { MainColors, grayColors } from './colors';
-
-const buttonColors = {
-  main: MainColors.navyBlue,
+const MainColors = {
+  navyBlue: '#005ac6',
+  orangeRed: '#fa6d33',
+  selectiveYellow: '#ffb200',
+  lightSalmon: '#ffa09d',
+  cosmic: '#713a67',
+  surfieGreen: '#017676',
 };
 
-const background = {
-  main: grayColors.white,
-  modal: grayColors.mediumGray,
-  innerModal: grayColors.lightGray,
-  input: grayColors.white,
-  disable: grayColors.mediumGray,
+const grayColors = {
+  white: '#FFFFFF',
+  lightGray: '#C5C5C5',
+  mediumGray: '#808080',
+  darkGray: '#3B3B3B',
+  black: '#000000',
 };
 
 const theme = {
-  buttonColors,
-  background,
+  MainColors,
+  grayColors,
 };
 
 export default theme;
