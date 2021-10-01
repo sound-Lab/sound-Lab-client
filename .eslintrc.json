@@ -13,12 +13,62 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks"],
+  "settings": {
+    "react": {
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "fragment": "Fragment",
+      "version": "detect",
+      "flowVersion": "0.53"
+    },
+    "propWrapperFunctions": [
+      "forbidExtraProps",
+      { "property": "freeze", "object": "Object" },
+      { "property": "myFavoriteWrapper" },
+      { "property": "forbidExtraProps", "exact": true }
+    ],
+    "componentWrapperFunctions": [
+      "observer",
+      { "property": "styled" },
+      { "property": "observer", "object": "Mobx" },
+      { "property": "observer", "object": "<pragma>" }
+    ],
+    "formComponents": [
+      "CustomForm",
+      { "name": "Form", "formAttribute": "endpoint" }
+    ],
+    "linkComponents": ["Hyperlink", { "name": "Link", "linkAttribute": "to" }]
+  },
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "no-unused-vars": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "no-nested-ternary": 0,
-    "no-console": 1,
-    "quotes": [2, "single"]
-  }
+    "block-spacing": "error",
+    "semi": "warn",
+    "eol-last": "warn",
+    "no-undef": "warn",
+    "no-console": "warn",
+    "no-multi-spaces": "warn",
+    "no-trailing-spaces": "warn",
+    "quotes": ["warn", "single"],
+    "comma-style": ["warn", "last"],
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 1,
+        "maxEOF": 0,
+        "maxBOF": 0
+      }
+    ],
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "comma-dangle": ["warn", "always-multiline"]
+  },
+  "overrides": [
+    {
+      "files": ["*.jsx", "*.js"]
+    }
+  ]
 }
