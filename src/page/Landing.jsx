@@ -7,9 +7,9 @@ import Button from '../components/common/Button';
 function Landing() {
   const { handleModal } = useContext(ModalContext);
 
-  const modalOpen = () => {
+  function modalOpen() {
     handleModal(<Modal text="Modal"></Modal>);
-  };
+  }
 
   return (
     <Wrapper className="landing">
