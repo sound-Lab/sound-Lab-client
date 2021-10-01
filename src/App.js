@@ -1,26 +1,36 @@
 import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+
+import { ModalProvider } from './context/ModalContext';
 
 import theme from './theme';
 import GlobalStyle from './theme/global';
 
-import Button from './components/common/Button';
+import Landing from './page/Landing';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AppWrapper className="App">
-        <header className="App-header"></header>
-        <Button></Button>
-      </AppWrapper>
       <GlobalStyle />
+      <Wrapper>
+        <ModalProvider>
+          <Switch>
+            <Route exact path="/">
+              <Landing />
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+        </ModalProvider>
+      </Wrapper>
     </ThemeProvider>
   );
 }
 
-const AppWrapper = styled.div`
+const Wrapper = styled.div`
   height: auto;
-  background-color: aqua;
 `;
 
 export default App;
