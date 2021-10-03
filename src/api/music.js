@@ -23,3 +23,24 @@ export async function addMusic(title) {
     throw new Error(err);
   }
 }
+
+export async function getMusicData(id) {
+  try {
+    const response = await fetch(`${API.URL}/mixEditor/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const { result, data, message } = await response.json();
+
+    if (result === 'err') {
+      throw new Error(message);
+    }
+
+    return data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
