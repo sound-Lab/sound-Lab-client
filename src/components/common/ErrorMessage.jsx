@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const ErrorMessage = ({ children }) => {
+function ErrorMessage({ children }) {
   return <Wrapper>{children}</Wrapper>;
-};
+}
 
 const Wrapper = styled.p`
   position: relative;
@@ -14,7 +14,7 @@ const Wrapper = styled.p`
 `;
 
 ErrorMessage.propTypes = {
-  children: PropTypes.String,
+  children: PropTypes.string,
 };
 
 export default ErrorMessage;
