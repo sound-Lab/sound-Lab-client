@@ -8,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;

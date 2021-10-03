@@ -14,10 +14,10 @@ function Loading() {
 const Wrapper = styled.div`
   z-index: 100;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: -20%;
   width: 100vw;
   height: 100vh;
+  background-color: rgba(255, 255, 255, 0.397);
 
   .loader {
     display: inline-block;
@@ -26,6 +26,7 @@ const Wrapper = styled.div`
     position: relative;
     border: 4px solid ${({ theme }) => theme.MainColors.navyBlue};
     top: 50%;
+    left: calc(50% - 19px);
     animation: loader 2s infinite ease;
   }
 

@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import theme from '../../theme';
 
-function Button({ onClick, text, buttonColor, width, height, disabled }) {
+function Button({ type, onClick, text, buttonColor, width, height, disabled }) {
   return (
     <StyledButton
-      type="button"
+      type={type}
       onClick={onClick}
       buttonColor={disabled ? theme.grayColors.mediumGray : buttonColor}
       width={width}
@@ -38,6 +38,7 @@ const StyledButton = styled.button`
 `;
 
 Button.propTypes = {
+  type: PropTypes.string,
   onClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
   buttonColor: PropTypes.oneOf(Object.values(theme.MainColors)),
@@ -47,6 +48,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
+  type: 'button',
   width: 100,
   height: 50,
   buttonColor: theme.MainColors.orangeRed,

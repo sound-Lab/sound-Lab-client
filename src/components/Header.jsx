@@ -4,20 +4,25 @@ import styled from 'styled-components';
 function Header() {
   return (
     <Wrapper>
-      <Text>Sound LAB</Text>
+      <h1>
+        <a href="/">Sound LAB</a>
+      </h1>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.header`
-  height: 40px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
   padding: 10px;
   background-color: ${({ theme }) => theme.grayColors.white};
-`;
 
-const Text = styled.span`
-  margin-right: 10px;
-  font-size: 30px;
+  a {
+    margin: 10px;
+    font-size: 30px;
+  }
 `;
 
 export default Header;
