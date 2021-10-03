@@ -28,7 +28,7 @@ function CreateMusicInputBox({ onSubmit }) {
     return <Loading />;
   }
 
-  async function submitData(ev) {
+  function submitData(ev) {
     ev.preventDefault();
 
     if (!inputValue.title) {
