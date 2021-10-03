@@ -45,6 +45,7 @@
     "eol-last": "warn",
     "no-undef": "warn",
     "no-console": "warn",
+    "no-unused-vars": "warn",
     "no-multi-spaces": "warn",
     "no-trailing-spaces": "warn",
     "quotes": ["warn", "single"],
