@@ -12,6 +12,24 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
     text-decoration: none;
   }
+
+  input {
+    outline: none;
+  }
+
+  ul, li {
+    text-align: center;
+    list-style-type: none;
+  }
+
+  input, button {
+    border: none;
+    outline: none;
+  }
+
+  .is-active {
+    background-color: ${({ theme }) => theme.MainColors.selectiveYellow};
+  }
 `;
 
 export default GlobalStyle;
