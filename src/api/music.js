@@ -44,3 +44,24 @@ export async function getMusicData(id) {
     throw new Error(err);
   }
 }
+
+export async function getDrumData() {
+  try {
+    const response = await fetch(`${API.URL}/mixEditor/tool/drum`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const { result, data, message } = await response.json();
+
+    if (result === 'err') {
+      throw new Error(message);
+    }
+
+    return data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}

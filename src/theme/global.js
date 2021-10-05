@@ -30,6 +30,10 @@ const GlobalStyle = createGlobalStyle`
   .is-active {
     background-color: ${({ theme }) => theme.MainColors.selectiveYellow};
   }
+
+  .is-currentIndex {
+    background-color: ${({ theme }) => theme.grayColors.lightGray};
+  }
 `;
 
 export default GlobalStyle;

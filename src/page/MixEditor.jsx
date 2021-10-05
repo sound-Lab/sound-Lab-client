@@ -6,11 +6,16 @@ import styled from 'styled-components';
 import { getMusicData } from '../api/music';
 
 import MixEditorHeader from '../components/MixEditor/Header';
+import AddTrackContainer from '../components/MixEditor/AddTrackContainer';
+import SheetMusic from '../components/MixEditor/SheetMusic';
+import Drum from '../components/MixEditor/Drum';
+
 import Loading from '../components/common/Loading';
 import Error from '../components/common/Error';
 
 function MixEditor() {
   const [musicTitle, setMusicTitle] = useState(null);
+  const [drum, setDrum] = useState([]);
   const { musicId } = useParams();
 
   useEffect(() => {
@@ -32,16 +37,28 @@ function MixEditor() {
   }
 
   return (
-    <Wrapper>
+    <>
       <MixEditorHeader title={musicTitle} />
-    </Wrapper>
+      <Wrapper>
+        <AddTrackContainer setDrum={setDrum} />
+        <SheetMusic />
+        <Dummy />
+        <Drum data={drum} />
+      </Wrapper>
+    </>
   );
 }
 
 const Wrapper = styled.div`
-  display: flex;
-  height: calc(100vh - 70px);
+  display: grid;
+  grid-template: 45% 55% / 20% 80%;
+  height: calc(100vh - 140px);
   background-color: ${({ theme }) => theme.MainColors.navyBlue};
+`;
+
+const Dummy = styled.div`
+  height: 100%;
+  background-color: whitesmoke;
 `;
 
 export default MixEditor;

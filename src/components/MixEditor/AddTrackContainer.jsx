@@ -1,18 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+import { getDrumData } from '../../api/music';
 
 import { ModalContext } from '../../context/ModalContext';
 import ToolSetModal from './ToolSetModal';
 
-function AddTrackContainer() {
+function AddTrackContainer({ setDrum }) {
   const [trackData, setTrackData] = useState([]);
   const { handleModal } = useContext(ModalContext);
+
+  const { mutate } = useMutation(getDrumData, {
+    onSuccess: (result) => {
+      setDrum(result);
+    },
+  });
 
   useEffect(() => {
     if (!trackData.length) {
       return;
     }
 
+    mutate();
     handleModal(null);
   }, [trackData]);
 
@@ -29,6 +40,10 @@ function AddTrackContainer() {
     </Wrapper>
   );
 }
+
+AddTrackContainer.propTypes = {
+  setDrum: PropTypes.any,
+};
 
 const Wrapper = styled.div`
   width: 100%;
