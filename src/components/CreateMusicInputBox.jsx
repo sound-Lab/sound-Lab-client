@@ -63,7 +63,7 @@ function CreateMusicInputBox({ onSubmit }) {
           onChange={handleChange}
         />
         <Button type="submit" text="submit" onClick={submitData} />
-        {isError && <ErrorMessage>{String(error)}</ErrorMessage>}
+        {isError && <ErrorMessage>{String(error.message)}</ErrorMessage>}
         {inputError && <ErrorMessage>{inputError}</ErrorMessage>}
       </StyledForm>
     </Wrapper>

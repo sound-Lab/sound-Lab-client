@@ -27,7 +27,7 @@ const StyledLinkButton = styled(Link)`
 `;
 
 Error.propTypes = {
-  error: PropTypes.object,
+  error: PropTypes.any,
 };
 
 export default Error;
