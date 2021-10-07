@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Button from '../common/Button';
+import Button from './common/Button';
 
-function Header({ title }) {
+function MixEditorHeader({ title }) {
   return (
     <Wrapper>
       <h2>Title : {title}</h2>
@@ -21,7 +21,7 @@ function Header({ title }) {
   );
 }
 
-Header.propTypes = {
+MixEditorHeader.propTypes = {
   title: PropTypes.string,
 };
 
@@ -49,4 +49,4 @@ const BpmInput = styled.div`
   margin: 25px 0px 25px 10px;
 `;
 
-export default Header;
+export default MixEditorHeader;

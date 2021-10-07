@@ -1,29 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useMutation } from 'react-query';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
-import { getDrumData } from '../../api/music';
+import { ModalContext } from '../context/ModalContext';
+import { setInstrument } from '../modules/mixEditor';
 
-import { ModalContext } from '../../context/ModalContext';
 import ToolSetModal from './ToolSetModal';
 
-function AddTrackContainer({ setDrum }) {
-  const [trackData, setTrackData] = useState([]);
+function TrackList() {
+  const [trackData, setTrackData] = useState(null);
+  const { tracks } = useSelector((state) => state.mixEditorReducer);
   const { handleModal } = useContext(ModalContext);
-
-  const { mutate } = useMutation(getDrumData, {
-    onSuccess: (result) => {
-      setDrum(result);
-    },
-  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!trackData.length) {
+    if (!trackData) {
       return;
     }
 
-    mutate();
+    dispatch(setInstrument(trackData));
     handleModal(null);
   }, [trackData]);
 
@@ -34,16 +29,12 @@ function AddTrackContainer({ setDrum }) {
   return (
     <Wrapper>
       <button onClick={openTrackModal}>+ Add Track</button>
-      {trackData.map((tool, index) => {
-        return <Track key={index}>{tool}</Track>;
+      {tracks.map((tool, index) => {
+        return <Track key={index}>{tool.title}</Track>;
       })}
     </Wrapper>
   );
 }
-
-AddTrackContainer.propTypes = {
-  setDrum: PropTypes.any,
-};
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,4 +64,4 @@ const Track = styled.li`
   }
 `;
 
-export default AddTrackContainer;
+export default TrackList;
