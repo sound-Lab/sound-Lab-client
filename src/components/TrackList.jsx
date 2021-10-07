@@ -1,18 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { ModalContext } from '../../context/ModalContext';
+import { ModalContext } from '../context/ModalContext';
+import { setInstrument } from '../modules/mixEditor';
+
 import ToolSetModal from './ToolSetModal';
 
-function AddTrackContainer() {
-  const [trackData, setTrackData] = useState([]);
+function TrackList() {
+  const [trackData, setTrackData] = useState(null);
+  const { tracks } = useSelector((state) => state.mixEditorReducer);
   const { handleModal } = useContext(ModalContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!trackData.length) {
+    if (!trackData) {
       return;
     }
 
+    dispatch(setInstrument(trackData));
     handleModal(null);
   }, [trackData]);
 
@@ -23,8 +29,8 @@ function AddTrackContainer() {
   return (
     <Wrapper>
       <button onClick={openTrackModal}>+ Add Track</button>
-      {trackData.map((tool, index) => {
-        return <Track key={index}>{tool}</Track>;
+      {tracks.map((tool, index) => {
+        return <Track key={index}>{tool.title}</Track>;
       })}
     </Wrapper>
   );
@@ -58,4 +64,4 @@ const Track = styled.li`
   }
 `;
 
-export default AddTrackContainer;
+export default TrackList;

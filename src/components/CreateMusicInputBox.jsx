@@ -1,32 +1,15 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { addMusic } from '../api/music';
-
 import Button from './common/Button';
-import Loading from './common/Loading';
 import ErrorMessage from './common/ErrorMessage';
 
 function CreateMusicInputBox({ onSubmit }) {
-  const history = useHistory();
   const [inputError, setInputError] = useState(false);
   const [inputValue, setInputValue] = useState({
     title: '',
   });
-
-  const { mutate, isLoading, error, isError } = useMutation(addMusic, {
-    onSuccess: (musicId) => {
-      onSubmit(musicId);
-      history.push(`/mixEditor/${musicId}`);
-    },
-  });
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   function submitData(ev) {
     ev.preventDefault();
@@ -36,7 +19,7 @@ function CreateMusicInputBox({ onSubmit }) {
       return;
     }
 
-    mutate(inputValue);
+    onSubmit(inputValue);
     setInputValue({ title: '' });
   }
 
@@ -63,7 +46,6 @@ function CreateMusicInputBox({ onSubmit }) {
           onChange={handleChange}
         />
         <Button type="submit" text="submit" onClick={submitData} />
-        {isError && <ErrorMessage>{String(error.message)}</ErrorMessage>}
         {inputError && <ErrorMessage>{inputError}</ErrorMessage>}
       </StyledForm>
     </Wrapper>

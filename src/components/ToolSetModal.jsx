@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Button from '../common/Button';
+import Button from './common/Button';
 
 function ToolSetModal({ onSubmit }) {
   function setInstrument(ev) {
     const selectedTool = ev.target.innerText;
 
-    onSubmit((oldTools) => [...oldTools, selectedTool]);
+    onSubmit(selectedTool);
   }
 
   return (
