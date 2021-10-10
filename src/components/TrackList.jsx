@@ -9,7 +9,7 @@ import ToolSetModal from './ToolSetModal';
 
 function TrackList() {
   const [trackData, setTrackData] = useState(null);
-  const { tracks } = useSelector((state) => state.mixEditorReducer);
+  const { tracks } = useSelector((state) => state.mixEditor);
   const { handleModal } = useContext(ModalContext);
   const dispatch = useDispatch();
 
