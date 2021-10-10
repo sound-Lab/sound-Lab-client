@@ -6,22 +6,30 @@ import Button from './common/Button';
 
 function ToolSetModal({ onSubmit }) {
   function setInstrument(ev) {
-    const selectedTool = ev.target.innerText;
+    const selectedTool = ev.target.id;
 
     onSubmit(selectedTool);
   }
 
   return (
     <Wrapper>
-      <Button text="Drum" onClick={setInstrument} width={200} height={90} />
+      <Button
+        text="Drum"
+        id="drum"
+        onClick={setInstrument}
+        width={200}
+        height={90}
+      />
       <Button
         text="Bass Lines"
+        id="bass"
         onClick={setInstrument}
         width={200}
         height={90}
       />
       <Button
         text="Chords Lines"
+        id="piano"
         onClick={setInstrument}
         width={200}
         height={90}
