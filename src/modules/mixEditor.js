@@ -13,12 +13,13 @@ const SET_INSTRUMENT = 'mixEditor/SET_INSTRUMENT';
 
 export const postMusic = createAction(POST_CREATE_MUSIC, (title) => title);
 export const getMusicData = createAction(GET_MUSIC_DATA);
+
 export const setInstrument = createAction(SET_INSTRUMENT, (tool) => tool);
 
 const postMusicReq = createRequest(POST_CREATE_MUSIC, api.createMusic);
-const getMusicReq = createRequest(POST_CREATE_MUSIC, api.getMusicData);
+const getMusicReq = createRequest(GET_MUSIC_DATA, api.getMusicData);
 
-export function* mixEditor() {
+export function* mixEditorSaga() {
   yield takeLatest(POST_CREATE_MUSIC, postMusicReq);
   yield takeLatest(GET_MUSIC_DATA, getMusicReq);
 }
@@ -34,7 +35,7 @@ const initialState = {
 
 const step = [Array(32).fill(0)];
 
-const mixEditorReducer = handleActions(
+const mixEditor = handleActions(
   {
     [POST_CREATE_MUSIC_SUCCESS]: (state, { payload: result }) => ({
       ...state,
@@ -55,4 +56,4 @@ const mixEditorReducer = handleActions(
   initialState,
 );
 
-export default mixEditorReducer;
+export default mixEditor;
