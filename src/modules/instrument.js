@@ -6,21 +6,17 @@ import createRequest from '../lib/createRequest';
 const GET_INSTRUMENT_DATA = 'mixEditor/GET_INSTRUMENT_DATA';
 const GET_INSTRUMENT_DATA_SUCCESS = 'mixEditor/GET_INSTRUMENT_DATA_SUCCESS';
 
-const LOAD_SOUND_DATA = 'mixEditor/LOAD_SOUND_DATA';
-
 export const getInstrumentData = createAction(
   GET_INSTRUMENT_DATA,
   (tool) => tool,
 );
-
-export const loadSoundData = createAction(LOAD_SOUND_DATA, (sound) => sound);
 
 const getInstrumentReq = createRequest(
   GET_INSTRUMENT_DATA,
   api.getInstrumentSoundData,
 );
 
-export function* instrumentSaga() {
+export function* watchInstrument() {
   yield takeLatest(GET_INSTRUMENT_DATA, getInstrumentReq);
 }
 
@@ -31,10 +27,6 @@ const initialState = {
 const instrument = handleActions(
   {
     [GET_INSTRUMENT_DATA_SUCCESS]: (state, action) => ({
-      ...state,
-      instrument: Object.assign(state.instrument, action.payload),
-    }),
-    [LOAD_SOUND_DATA]: (state, action) => ({
       ...state,
       instrument: Object.assign(state.instrument, action.payload),
     }),
