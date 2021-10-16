@@ -20,15 +20,17 @@ export function initialSteps(instrument) {
 
   if (name === 'drum') {
     tracks.codeName = codes;
+    tracks.midiSteps = Array(16).fill(0);
     tracks.stepsMap = codes.map((code) => ({
       name: code,
-      steps: Array(16).fill(0),
+      steps: Array(64).fill(0),
     }));
   } else {
-    tracks.codeName = noteName.flat();
-    tracks.stepsMap = noteName.flat().map((code) => ({
+    tracks.codeName = noteName;
+    tracks.midiSteps = Array(64).fill(0);
+    tracks.stepsMap = noteName.map((code) => ({
       name: code,
-      steps: Array(32).fill(0),
+      steps: Array(512).fill(0),
     }));
   }
 
