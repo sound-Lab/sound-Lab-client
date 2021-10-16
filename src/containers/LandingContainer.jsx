@@ -20,18 +20,27 @@ function LandingContainer() {
 
   useEffect(() => {
     if (!titleData) {
-      return;
+      return null;
     }
 
-    dispatch(postMusic(titleData.title));
+    try {
+      dispatch(postMusic(titleData.title));
+    } catch (error) {
+      console.log(error, 'error');
+    }
   }, [titleData]);
 
   useEffect(() => {
-    if (isLoading === false) {
-      handleModal(null);
-      history.push(`/mixEditor/${id}`);
+    if (!id || !titleData) {
+      return null;
     }
-  }, [isLoading]);
+
+    history.push(`/mixEditor/${id}`);
+
+    return () => {
+      handleModal(null);
+    };
+  }, [id, isLoading]);
 
   function modalOpen() {
     handleModal(<CreateMusicInputBox onSubmit={setTitleData} />);
@@ -39,16 +48,19 @@ function LandingContainer() {
 
   return (
     <Wrapper>
-      <Button text="+ Create" onClick={modalOpen}></Button>
-      {isLoading && <Loading />}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Button text="+ Create" onClick={modalOpen}></Button>
+      )}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   display: flex;
-  height: calc(100vh - 70px);
-  background-color: ${({ theme }) => theme.MainColors.surfieGreen};
+  height: 100vh;
+  background-color: ${({ theme }) => theme.mainColor.surfieGreen};
 `;
 
-export default React.memo(LandingContainer);
+export default LandingContainer;
