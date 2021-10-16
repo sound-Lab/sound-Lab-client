@@ -17,16 +17,16 @@ const Wrapper = styled.div`
   top: 0%;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.397);
+  background-color: rgba(37, 37, 37, 0.397);
 
   .loader {
-    display: inline-block;
     width: 30px;
     height: 30px;
     position: relative;
-    border: 4px solid ${({ theme }) => theme.MainColors.navyBlue};
+    display: inline-block;
     top: 50%;
     left: calc(50% - 19px);
+    border: 4px solid ${({ theme }) => theme.mainColor.navyBlue};
     animation: loader 2s infinite ease;
   }
 

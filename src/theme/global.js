@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
 
   html, body {
     width: 100%;
+    overflow: hidden;
   }
 
   a {
@@ -28,7 +29,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .is-active {
-    background-color: ${({ theme }) => theme.MainColors.selectiveYellow};
+    background-color: ${({ theme }) => theme.mainColor.selectiveYellow};
   }
 
   .is-currentIndex {

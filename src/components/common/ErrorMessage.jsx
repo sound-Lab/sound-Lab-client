@@ -10,7 +10,7 @@ const Wrapper = styled.p`
   position: relative;
   margin-top: 10px;
   font-size: 13px;
-  color: ${({ theme }) => theme.MainColors.surfieGreen};
+  color: ${({ theme }) => theme.mainColor.surfieGreen};
 `;
 
 ErrorMessage.propTypes = {

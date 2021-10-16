@@ -1,35 +1,161 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import * as Tone from 'tone';
 
 import Button from './common/Button';
-import BpmSlider from './BpmSlider';
+import InputBox from './InputBox';
 
-import { updatePlay } from '../modules/mixEditor';
+import {
+  updatePlay,
+  updateRepeat,
+  putMusicData,
+  updateBpm,
+  updateTitle,
+} from '../modules/mixEditor';
 
-function MixEditorHeader({ title }) {
-  const { isPlaying } = useSelector((state) => state.mixEditor);
+function MixEditorHeader() {
+  const { tracks, isPlaying, bpm, title, repeat, sampler } = useSelector(
+    (state) => state.mixEditor,
+  );
+  const { musicId } = useParams();
+  const stepIndex = useRef(0);
   const dispatch = useDispatch();
 
-  function handleHat() {
-    dispatch(updatePlay());
+  Tone.Transport.bpm.value = bpm;
+
+  useEffect(() => {
+    isPlaying ? Tone.Transport.start() : Tone.Transport.stop();
+
+    return () => {
+      Tone.Transport.stop();
+    };
+  }, [isPlaying]);
+
+  useEffect(() => {
+    Tone.Transport.cancel();
+    Tone.Transport.scheduleRepeat(handleStart, '16n');
+  }, [tracks, isPlaying]);
+
+  function saveMusicData() {
+    try {
+      if (!tracks.length) {
+        return;
+      }
+
+      dispatch(putMusicData({ tracks, musicId }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleStart() {
+    tracks.forEach((track, trackIndex) => {
+      if (!track.mute) {
+        const { codeName, stepsMap } = track;
+
+        stepsMap.forEach((track, index) => {
+          const step = track.steps[stepIndex.current];
+
+          if (step === 1) {
+            sampler[trackIndex].triggerAttackRelease(codeName[index]);
+          }
+        });
+      }
+    });
+
+    stepIndex.current =
+      stepIndex.current === repeat ? 0 : stepIndex.current + 1;
+  }
+
+  function handleTitle(newTitle) {
+    dispatch(updateTitle(newTitle));
+  }
+
+  function handleBpm(ev) {
+    ev.preventDefault();
+
+    dispatch(updateBpm(rangeValue));
+  }
+
+  function handlePlay(ev) {
+    ev.preventDefault();
+    const type = ev.target.id;
+
+    switch (type) {
+      case 'play':
+        dispatch(updatePlay());
+        break;
+
+      case 'restart':
+        stepIndex.current = 0;
+        break;
+
+      case 'repeatRange':
+        dispatch(updateRepeat(repeat === 32 ? 64 : 32));
+        break;
+
+      default:
+        break;
+    }
   }
 
   return (
     <Wrapper>
-      <h2>Title : {title}</h2>
-      <MusicPlayer>
-        <Button
-          text={isPlaying ? 'II' : '▶️'}
-          onClick={handleHat}
-          width={40}
-          height={35}></Button>
-        <Button text="◼️" width={40} height={35}></Button>
-      </MusicPlayer>
-      <BpmInput>
-        <BpmSlider />
-      </BpmInput>
+      <EditorHeader>
+        <Exit>
+          <a href="/">Exit</a>
+        </Exit>
+        <Title value={title} onBlur={handleTitle} />
+        <StyledSaveButton
+          text="Save"
+          onClick={saveMusicData}
+          width={50}
+          height={30}
+          fontSize={14}
+        />
+      </EditorHeader>
+      <EditorToolBar>
+        <div className="player">
+          <StyledPlayButton
+            text={'▶️'}
+            id="play"
+            onClick={handlePlay}
+            width={35}
+            height={35}
+            buttonColor={'black'}
+            disabled={isPlaying ? true : false}
+          />
+          <StyledPlayButton
+            text={'II'}
+            id="play"
+            onClick={handlePlay}
+            width={35}
+            height={35}
+            buttonColor={'black'}
+            disabled={isPlaying ? false : true}
+          />
+          <StyledPlayButton
+            text={'◼️'}
+            id="restart"
+            onClick={handlePlay}
+            width={35}
+            height={35}
+            buttonColor={'black'}
+          />
+        </div>
+        <InputBox value={bpm} onBlur={handleBpm} />
+        <StyledPlayButton
+          text={repeat === 32 ? 8 : 16}
+          id="repeatRange"
+          onClick={handlePlay}
+          width={50}
+          height={35}
+          buttonColor={'black'}
+        />
+      </EditorToolBar>
     </Wrapper>
   );
 }
@@ -38,28 +164,75 @@ MixEditorHeader.propTypes = {
   title: PropTypes.string,
 };
 
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr;
-  width: 100%;
-  height: calc(100% - 70px);
-  background-color: whitesmoke;
+const Wrapper = styled.header`
+  width: 100vw;
+  height: 100px;
+  background-color: #33393f;
+`;
 
-  h2 {
-    width: 100px;
-    margin: 25px 0px 25px 10px;
-    vertical-align: middle;
+const EditorHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: -1px 2px 10px 0px #0c0c0c3b;
+`;
+
+const Exit = styled.div`
+  margin: 15px;
+  width: 40px;
+  text-align: center;
+  color: white;
+  font-size: 15px;
+  border-right: solid 1px #969696;
+  transition: border-right-color 0.3s, color 0.3s;
+
+  &:hover {
+    color: #c20101;
+    border-right-color: #c20101;
   }
 `;
 
-const MusicPlayer = styled.div`
-  display: flex;
-  align-content: space-around;
+const Title = styled.input`
+  width: 400px;
+  height: 30px;
+  margin: auto;
+  outline: none;
+  background: #33393f;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  transition: background 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    background: #474747;
+  }
+
+  &:focus {
+    background: #292929;
+  }
 `;
 
-const BpmInput = styled.div`
-  width: 100%;
-  margin: 25px 0px 25px 10px;
+const EditorToolBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+  margin: 5px;
+
+  .player {
+    display: flex;
+    justify-content: space-between;
+    width: 170px;
+  }
+`;
+
+const StyledSaveButton = styled(Button)`
+  margin: 10px;
+`;
+
+const StyledPlayButton = styled(Button)`
+  &:hover {
+    background-color: ${({ theme }) => theme.grayColors.darkGray};
+  }
 `;
 
 export default MixEditorHeader;

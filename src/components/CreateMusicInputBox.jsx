@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import Button from './common/Button';
 import ErrorMessage from './common/ErrorMessage';
 
-function CreateMusicInputBox({ onSubmit }) {
-  const [inputError, setInputError] = useState(false);
+function CreateMusicInputBox({ onSubmit, err }) {
+  const [isError, setError] = useState(false);
   const [inputValue, setInputValue] = useState({
     title: '',
   });
@@ -15,7 +15,7 @@ function CreateMusicInputBox({ onSubmit }) {
     ev.preventDefault();
 
     if (!inputValue.title) {
-      setInputError('please input value');
+      setError(err ? err : 'please input value');
       return;
     }
 
@@ -26,7 +26,7 @@ function CreateMusicInputBox({ onSubmit }) {
   function handleChange({ target }) {
     const { value } = target;
 
-    setInputError(true);
+    setError(true);
 
     setInputValue({
       ...inputValue,
@@ -46,7 +46,7 @@ function CreateMusicInputBox({ onSubmit }) {
           onChange={handleChange}
         />
         <Button type="submit" text="submit" onClick={submitData} />
-        {inputError && <ErrorMessage>{inputError}</ErrorMessage>}
+        {isError && <ErrorMessage>{isError}</ErrorMessage>}
       </StyledForm>
     </Wrapper>
   );
@@ -54,6 +54,7 @@ function CreateMusicInputBox({ onSubmit }) {
 
 CreateMusicInputBox.propTypes = {
   onSubmit: PropTypes.func,
+  err: PropTypes.string,
 };
 
 const Wrapper = styled.div`

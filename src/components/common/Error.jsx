@@ -19,9 +19,9 @@ const Wrapper = styled.div`
 `;
 
 const StyledLinkButton = styled(Link)`
-  display: inline-block;
   min-width: 80px;
   height: 45px;
+  display: inline-block;
   border-radius: 8px;
   background-color: #2f49d1;
 `;
