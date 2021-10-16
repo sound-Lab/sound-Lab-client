@@ -38,12 +38,12 @@ const SoundColumns = styled.div`
   overflow: auto;
 
   div {
-    width: 160vw;
-    height: 20px;
+    width: 400vh;
+    height: 30px;
     display: flex;
     flex-direction: row;
     border: solid 0.01em;
-    border-color: ${({ theme }) => theme.MainColors.navyBlue};
+    border-color: ${({ theme }) => theme.mainColor.navyBlue};
   }
 `;
 

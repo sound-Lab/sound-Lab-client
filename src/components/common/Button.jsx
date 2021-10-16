@@ -5,24 +5,26 @@ import styled from 'styled-components';
 import theme from '../../theme';
 
 function Button({
-  type,
   id,
   onClick,
   text,
   buttonColor,
+  fontSize,
   width,
   height,
   disabled,
+  className,
 }) {
   return (
     <StyledButton
-      type={type}
       id={id}
       onClick={onClick}
       buttonColor={disabled ? theme.grayColors.mediumGray : buttonColor}
+      fontSize={fontSize}
       width={width}
       height={height}
-      disabled={disabled}>
+      disabled={disabled}
+      className={className}>
       {text}
     </StyledButton>
   );
@@ -32,17 +34,18 @@ const StyledButton = styled.button`
   width: ${(props) => props.width + 'px'};
   height: ${(props) => props.height + 'px'};
   margin: auto;
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   text-align: center;
-  font-size: large;
+  font-size: ${(props) => props.fontSize + 'px'};
   background-color: ${(props) => props.buttonColor};
   color: ${({ theme }) => theme.grayColors.white};
+  transition: background-color 0.3s, color 0.3s;
 
   &:hover {
     transform: scale(0.97);
     opacity: 80%;
-    background-color: ${({ theme }) => theme.MainColors.selectiveYellow};
+    background-color: ${({ theme }) => theme.mainColor.navyBlue};
     color: ${({ theme }) => theme.grayColors.white};
   }
 `;
@@ -52,17 +55,19 @@ Button.propTypes = {
   id: PropTypes.any,
   onClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
-  buttonColor: PropTypes.oneOf(Object.values(theme.MainColors)),
+  buttonColor: PropTypes.oneOf(Object.values(theme.mainColor)),
   height: PropTypes.number,
   width: PropTypes.number,
   disabled: PropTypes.bool,
+  fontSize: PropTypes.number,
+  className: PropTypes.any,
 };
 
 Button.defaultProps = {
   type: 'button',
   width: 100,
   height: 50,
-  buttonColor: theme.MainColors.orangeRed,
+  buttonColor: theme.mainColor.surfieGreen,
   disabled: false,
 };
 
