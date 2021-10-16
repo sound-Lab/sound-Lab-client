@@ -14,7 +14,7 @@ const Wrapper = styled.p`
 `;
 
 ErrorMessage.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.any,
 };
 
 export default ErrorMessage;

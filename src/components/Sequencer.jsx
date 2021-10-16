@@ -1,73 +1,33 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import * as Tone from 'tone';
 
-import Button from './common/Button';
+import { updateStep } from '../modules/mixEditor';
 import SoundBoxMap from './common/SoundBoxMap';
 
-import { initialSteps } from '../lib/toneSampler';
-import { noteName } from '../lib/midipath';
+function Sequencer() {
+  const { tracks, currentTrack } = useSelector((state) => state.mixEditor);
+  const { codeName, stepsMap } = tracks[currentTrack].steps;
+  const { sampler } = tracks[currentTrack];
+  const dispatch = useDispatch();
 
-Tone.Transport.bpm.value = 120;
+  function updateSteps(codes, stepIndex) {
+    const newStep = [...stepsMap];
 
-function Sequencer({ instrument }) {
-  const codesName = noteName.flat();
-  const [tracks, setTracks] = useState(initialSteps(codesName));
-  const [playing, setPlaying] = useState(false);
-  const stepIndex = useRef(0);
+    newStep[codes].steps[stepIndex] =
+      newStep[codes].steps[stepIndex] === 0 ? 1 : 0;
 
-  useEffect(() => {
-    playing ? Tone.Transport.start() : Tone.Transport.stop();
-
-    return () => {
-      Tone.Transport.stop();
-    };
-  }, [playing]);
-
-  useEffect(() => {
-    Tone.Transport.cancel();
-    Tone.Transport.scheduleRepeat(handleStart, '32n');
-  }, [tracks]);
-
-  function handleStart() {
-    tracks.forEach((track, index) => {
-      const step = track.steps[stepIndex.current];
-
-      if (step === 1) {
-        instrument.triggerAttackRelease(codesName[index], 1);
-      }
-    });
-
-    stepIndex.current = stepIndex.current === 31 ? 0 : stepIndex.current + 1;
+    sampler.triggerAttackRelease(codeName[codes], 1);
+    dispatch(updateStep({ newStep, currentTrack }));
   }
-
-  function handleHat() {
-    setPlaying((playing) => !playing);
-  }
-
-  const updateStep = useCallback(
-    function (codes, stepIndex) {
-      const newTracks = [...tracks];
-
-      newTracks[codes].steps[stepIndex] =
-        newTracks[codes].steps[stepIndex] === 0 ? 1 : 0;
-
-      setTracks(newTracks);
-
-      instrument.triggerAttackRelease(codesName[codes], 1);
-    },
-    [tracks, setTracks],
-  );
 
   return (
     <Wrapper>
-      <SoundBoxMap tracks={tracks} updateStep={updateStep} />
-      <Button
-        text={playing ? 'II' : '▶️'}
-        onClick={handleHat}
-        width={40}
-        height={35}
+      <SoundBoxMap
+        tracks={stepsMap}
+        updateStep={updateSteps}
+        noteName={codeName}
       />
     </Wrapper>
   );

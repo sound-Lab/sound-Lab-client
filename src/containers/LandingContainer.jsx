@@ -14,7 +14,7 @@ function LandingContainer() {
   const [titleData, setTitleData] = useState(null);
   const { handleModal } = useContext(ModalContext);
   const { isLoading } = useSelector((state) => state.loading);
-  const { id } = useSelector((state) => state.mixEditorReducer);
+  const { id } = useSelector((state) => state.mixEditor);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -39,7 +39,7 @@ function LandingContainer() {
 
   return (
     <Wrapper>
-      <Button text="+ Create" onClick={() => modalOpen()}></Button>
+      <Button text="+ Create" onClick={modalOpen}></Button>
       {isLoading && <Loading />}
     </Wrapper>
   );

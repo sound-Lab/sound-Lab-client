@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import { all } from 'redux-saga/effects';
-import mixEditor, { mixEditorSaga } from './mixEditor';
+import mixEditor, { watchMixEditor } from './mixEditor';
 import loading from './loading';
-import instrument, { instrumentSaga } from './instrument';
+import instrument, { watchInstrument } from './instrument';
 
 const rootReducer = combineReducers({
   mixEditor,
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
 });
 
 export function* root() {
-  yield all([mixEditorSaga(), instrumentSaga()]);
+  yield all([watchMixEditor(), watchInstrument()]);
 }
 
 export default rootReducer;

@@ -1,3 +1,4 @@
+import { noteName } from './midipath';
 import * as Tone from 'tone';
 
 export function toneSampler(tool) {
@@ -9,15 +10,27 @@ export function toneSampler(tool) {
   return sampler;
 }
 
-export function initialSteps(codes) {
-  if (!codes) {
+export function initialSteps(instrument) {
+  if (!instrument) {
     return;
   }
 
-  const tracks = codes.flat().map((code) => ({
-    name: code,
-    steps: Array(32).fill(0),
-  }));
+  const tracks = {};
+  const { name, codes } = instrument;
+
+  if (name === 'drum') {
+    tracks.codeName = codes;
+    tracks.stepsMap = codes.map((code) => ({
+      name: code,
+      steps: Array(16).fill(0),
+    }));
+  } else {
+    tracks.codeName = noteName.flat();
+    tracks.stepsMap = noteName.flat().map((code) => ({
+      name: code,
+      steps: Array(32).fill(0),
+    }));
+  }
 
   return tracks;
 }

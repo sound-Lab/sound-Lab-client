@@ -1,22 +1,35 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Button from './common/Button';
+import BpmSlider from './BpmSlider';
+
+import { updatePlay } from '../modules/mixEditor';
 
 function MixEditorHeader({ title }) {
+  const { isPlaying } = useSelector((state) => state.mixEditor);
+  const dispatch = useDispatch();
+
+  function handleHat() {
+    dispatch(updatePlay());
+  }
+
   return (
     <Wrapper>
       <h2>Title : {title}</h2>
       <MusicPlayer>
-        <Button text="▶️" width={40} height={35}></Button>
+        <Button
+          text={isPlaying ? 'II' : '▶️'}
+          onClick={handleHat}
+          width={40}
+          height={35}></Button>
         <Button text="◼️" width={40} height={35}></Button>
-        <Button text="II" width={40} height={35}></Button>
       </MusicPlayer>
       <BpmInput>
-        BPM : <input />
+        <BpmSlider />
       </BpmInput>
-      <Button text="start Session" height={45}></Button>
     </Wrapper>
   );
 }
@@ -29,7 +42,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr;
   width: 100%;
-  height: 70px;
+  height: calc(100% - 70px);
   background-color: whitesmoke;
 
   h2 {
