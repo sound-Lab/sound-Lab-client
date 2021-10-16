@@ -14,16 +14,16 @@ export const finishLoading = createAction(
 );
 
 const initialState = {
-  isLoading: null,
+  isLoading: false,
 };
 
 const loading = handleActions(
   {
-    [START_LOADING]: (state, action) => ({
+    [START_LOADING]: (state) => ({
       ...state,
       isLoading: true,
     }),
-    [FINISH_LOADING]: (state, action) => ({
+    [FINISH_LOADING]: (state) => ({
       ...state,
       isLoading: false,
     }),
