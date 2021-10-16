@@ -4,7 +4,6 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import { ModalProvider } from '../context/ModalContext';
 
-import Header from '../components/common/Header';
 import LandingContainer from '../containers/LandingContainer';
 import MixEditorContainer from '../containers/MixEditorContainer';
 
@@ -16,7 +15,6 @@ function AppContainer() {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Wrapper>
-        <Header />
         <ModalProvider>
           <Switch>
             <Route exact path="/">
