@@ -1,4 +1,4 @@
-const MainColors = {
+const mainColor = {
   navyBlue: '#005ac6',
   orangeRed: '#fa6d33',
   selectiveYellow: '#ffb200',
@@ -16,7 +16,7 @@ const grayColors = {
 };
 
 const theme = {
-  MainColors,
+  mainColor,
   grayColors,
 };
 
