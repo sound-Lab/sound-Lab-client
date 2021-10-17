@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import * as Tone from 'tone';
 
 import Button from './common/Button';
+import Error from './common/Error';
 import InputBox from './InputBox';
 
 import {
@@ -47,20 +48,20 @@ function MixEditorHeader() {
 
       dispatch(putMusicData({ tracks, musicId }));
     } catch (error) {
-      console.log(error);
+      <Error error={error} />;
     }
   }
 
   function handleStart() {
-    tracks.forEach((track, trackIndex) => {
+    tracks.forEach((track) => {
       if (!track.mute) {
-        const { codeName, stepsMap } = track;
+        const { codeName, stepsMap, name } = track;
 
         stepsMap.forEach((track, index) => {
           const step = track.steps[stepIndex.current];
 
           if (step === 1) {
-            sampler[trackIndex].triggerAttackRelease(codeName[index]);
+            sampler[name].triggerAttackRelease(codeName[index]);
           }
         });
       }

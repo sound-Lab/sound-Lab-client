@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { ModalContext } from '../context/ModalContext';
 import { postMusic } from '../modules/mixEditor';
 
+import CreateMusicInputBox from '../components/CreateMusicInputBox';
 import Button from '../components/common/Button';
 import Loading from '../components/common/Loading';
-import CreateMusicInputBox from '../components/CreateMusicInputBox';
+import Error from '../components/common/Error';
 
 function LandingContainer() {
   const [titleData, setTitleData] = useState(null);
@@ -26,7 +27,7 @@ function LandingContainer() {
     try {
       dispatch(postMusic(titleData.title));
     } catch (error) {
-      console.log(error, 'error');
+      <Error error={error} />;
     }
   }, [titleData]);
 

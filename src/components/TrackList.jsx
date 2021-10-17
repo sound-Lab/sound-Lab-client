@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import * as Tone from 'tone';
 
 import { ModalContext } from '../context/ModalContext';
 import {
@@ -11,8 +10,7 @@ import {
   updateTrackMute,
   updateTrackSolo,
 } from '../modules/mixEditor';
-import { getInstrumentData } from '../modules/instrument';
-import { toneSampler, initialSteps } from '../lib/toneSampler';
+import { initialSteps } from '../lib/toneSampler';
 
 import ToolSetModal from './ToolSetModal';
 import Loading from './common/Loading';
@@ -30,25 +28,13 @@ function TrackList() {
       return;
     }
 
-    if (instrument[selectedInstrument]) {
-      handleModal(null);
-      return;
-    }
-
-    handleModal(null);
-    dispatch(getInstrumentData(selectedInstrument));
-  }, [instrument, selectedInstrument]);
-
-  useEffect(async () => {
-    if (!instrument[selectedInstrument]) {
-      return;
-    }
-
-    const { codeName, midiSteps, stepsMap } = initialSteps(
-      instrument[selectedInstrument],
+    const selectedInstrumentData = instrument.filter(
+      (tool) => tool.name === selectedInstrument,
     );
 
-    const sampler = toneSampler(instrument[selectedInstrument]);
+    const { codeName, midiSteps, stepsMap } = initialSteps(
+      selectedInstrumentData,
+    );
 
     const track = {
       name: selectedInstrument,
@@ -58,15 +44,10 @@ function TrackList() {
       mute: false,
     };
 
-    try {
-      await Tone.loaded();
-    } catch (error) {
-      console.log(error);
-    }
-
-    dispatch(setTrack({ track, sampler }));
+    dispatch(setTrack({ track }));
     dispatch(setCurrentTrack(tracks.length));
-  }, [instrument[selectedInstrument]]);
+    handleModal(null);
+  }, [selectedInstrument]);
 
   useEffect(() => {
     setSelectedInstrument(null);

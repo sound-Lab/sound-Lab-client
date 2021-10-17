@@ -6,10 +6,7 @@ import createRequest from '../lib/createRequest';
 const GET_INSTRUMENT_DATA = 'mixEditor/GET_INSTRUMENT_DATA';
 const GET_INSTRUMENT_DATA_SUCCESS = 'mixEditor/GET_INSTRUMENT_DATA_SUCCESS';
 
-export const getInstrumentData = createAction(
-  GET_INSTRUMENT_DATA,
-  (tool) => tool,
-);
+export const getInstrumentData = createAction(GET_INSTRUMENT_DATA);
 
 const getInstrumentReq = createRequest(
   GET_INSTRUMENT_DATA,
@@ -21,14 +18,14 @@ export function* watchInstrument() {
 }
 
 const initialState = {
-  instrument: {},
+  instrument: [],
 };
 
 const instrument = handleActions(
   {
-    [GET_INSTRUMENT_DATA_SUCCESS]: (state, action) => ({
+    [GET_INSTRUMENT_DATA_SUCCESS]: (state, { payload: data }) => ({
       ...state,
-      instrument: Object.assign(state.instrument, action.payload),
+      instrument: Object.assign(state.instrument, data.data),
     }),
   },
   initialState,
