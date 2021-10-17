@@ -17,10 +17,13 @@ import TrackList from '../components/TrackList';
 import StepSequencer from '../components/StepSequencer';
 import SheetMusic from '../components/SheetMusic';
 import Loading from '../components/common/Loading';
+import Error from '../components/common/Error';
 
 function MixEditorContainer() {
   const [isSampleLoading, setIsSampleLoading] = useState(false);
-  const { tracks, currentTrack } = useSelector((state) => state.mixEditor);
+  const { tracks, currentTrack, sampler } = useSelector(
+    (state) => state.mixEditor,
+  );
   const { instrument } = useSelector((state) => state.instrument);
   const { isLoading } = useSelector((state) => state.loading);
   const { musicId } = useParams();
@@ -28,46 +31,42 @@ function MixEditorContainer() {
 
   useEffect(() => {
     dispatch(getMusicData(musicId));
-  }, [musicId]);
+    dispatch(getInstrumentData());
+  }, []);
+
+  useEffect(async () => {
+    if (Object.keys(sampler).length !== 0) {
+      return;
+    }
+
+    if (!instrument.length) {
+      return;
+    }
+
+    const samplerList = toneSampler(instrument);
+
+    try {
+      await Tone.loaded();
+    } catch (error) {
+      <Error error={error} />;
+    }
+
+    dispatch(setTrackSampler({ samplerList }));
+    setIsSampleLoading(true);
+  }, [instrument.length, isLoading]);
 
   useEffect(() => {
     if (!tracks.length) {
       return;
     }
 
-    if (currentTrack === null) {
-      tracks.map((track) => dispatch(getInstrumentData(track.name)));
+    if (Object.keys(sampler).length !== 0) {
+      return;
     }
 
     setIsSampleLoading(true);
-
-    return () => {
-      setIsSampleLoading(false);
-    };
-  }, [tracks]);
-
-  useEffect(async () => {
-    if (Object.keys(instrument).length === 0) {
-      return;
-    }
-
-    if (!tracks.length) {
-      return;
-    }
-
-    const sampler = tracks.map((track, index) => {
-      return toneSampler(instrument[track.name]);
-    });
-
-    try {
-      await Tone.loaded();
-    } catch (error) {
-      console.log(error);
-    }
-
-    dispatch(setTrackSampler({ sampler }));
-    dispatch(setCurrentTrack(tracks.length - 1));
-  }, [isLoading]);
+    dispatch(setCurrentTrack(0));
+  }, [sampler]);
 
   return (
     <>
@@ -80,7 +79,7 @@ function MixEditorContainer() {
         <ToolWrapper>
           {isSampleLoading && currentTrack !== null && <StepSequencer />}
         </ToolWrapper>
-        {isLoading && <Loading />}
+        {!isSampleLoading && <Loading />}
       </MixEditorWrapper>
     </>
   );
