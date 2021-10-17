@@ -9,8 +9,8 @@ export function getMusicData(id) {
   return axios.get(`${API.URL}/mixEditor/music/${id}`);
 }
 
-export async function getInstrumentSoundData(tool) {
-  return axios.get(`${API.URL}/mixEditor/instrument/${tool}`);
+export async function getInstrumentSoundData() {
+  return axios.get(`${API.URL}/mixEditor/instrument`);
 }
 
 export async function putMusicData(data) {
