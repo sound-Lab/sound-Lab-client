@@ -19,7 +19,7 @@ import Loading from './common/Loading';
 
 function TrackList() {
   const [selectedInstrument, setSelectedInstrument] = useState(null);
-  const { tracks, currentTrack } = useSelector((state) => state.mixEditor);
+  const { tracks } = useSelector((state) => state.mixEditor);
   const { instrument } = useSelector((state) => state.instrument);
   const { isLoading } = useSelector((state) => state.loading);
   const { handleModal } = useContext(ModalContext);
