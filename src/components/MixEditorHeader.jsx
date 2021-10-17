@@ -148,10 +148,10 @@ function MixEditorHeader() {
         </div>
         <InputBox value={bpm} onBlur={handleBpm} />
         <StyledPlayButton
-          text={repeat === 32 ? 8 : 16}
+          text={repeat === 32 ? 'Repeat: A' : 'Repeat: A - B'}
           id="repeatRange"
           onClick={handlePlay}
-          width={50}
+          width={100}
           height={35}
           buttonColor={'black'}
         />
