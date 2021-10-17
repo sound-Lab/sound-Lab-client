@@ -12,7 +12,7 @@ function StepSequencer() {
     (state) => state.mixEditor,
   );
   const newTrack = tracks[currentTrack];
-  const { codeName, stepsMap, midiSteps } = newTrack;
+  const { codeName, stepsMap, midiSteps, name } = newTrack;
   const [playing, setPlaying] = useState(false);
   const [partToggle, setPartToggle] = useState('A');
   const stepIndexRef = useRef(0);
@@ -23,6 +23,7 @@ function StepSequencer() {
   useEffect(() => {
     playing ? Tone.Transport.start() : Tone.Transport.stop();
     Tone.Transport.clear();
+
     return () => {
       Tone.Transport.stop();
     };
@@ -38,7 +39,7 @@ function StepSequencer() {
       const step = track.steps[stepIndexRef.current];
 
       if (step === 1) {
-        sampler[currentTrack].triggerAttackRelease(codeName[index]);
+        sampler[name].triggerAttackRelease(codeName[index]);
       }
     });
 
@@ -69,9 +70,10 @@ function StepSequencer() {
     newStep[codes].steps[setIndexSet] =
       newStep[codes].steps[setIndexSet] === 0 ? 1 : 0;
 
-    sampler[currentTrack].triggerAttackRelease(codeName[codes], 1);
+    sampler[name].triggerAttackRelease(codeName[codes], 1);
 
     newTrack.midiSteps = newMidiStep;
+
     dispatch(updateStep({ currentTrack, newTrack }));
   }
 
