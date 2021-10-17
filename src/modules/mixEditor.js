@@ -75,7 +75,7 @@ const initialState = {
   isPlaying: false,
   tracks: [],
   currentTrack: null,
-  initialStep: Array(64).fill(0),
+  initialStep: Array(16).fill(0),
   repeat: 32,
   sampler: [],
 };
