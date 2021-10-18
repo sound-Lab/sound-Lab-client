@@ -5,18 +5,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 
+import BpmInputBox from './BpmInputBox';
+import TitleInputBox from './TitleInputBox';
 import Button from './common/Button';
 import Error from './common/Error';
 
-import {
-  updatePlay,
-  updateRepeat,
-  putMusicData,
-  updateTitle,
-} from '../modules/mixEditor';
+import { updatePlay, updateRepeat, putMusicData } from '../modules/mixEditor';
 
 function MixEditorHeader() {
-  const { tracks, isPlaying, bpm, title, repeat, sampler } = useSelector(
+  const { tracks, isPlaying, bpm, repeat, sampler } = useSelector(
     (state) => state.mixEditor,
   );
   const { musicId } = useParams();
@@ -69,10 +66,6 @@ function MixEditorHeader() {
       stepIndex.current === repeat ? 0 : stepIndex.current + 1;
   }
 
-  function handleTitle(newTitle) {
-    dispatch(updateTitle(newTitle));
-  }
-
   function handlePlay(ev) {
     ev.preventDefault();
     const type = ev.target.id;
@@ -84,10 +77,11 @@ function MixEditorHeader() {
 
       case 'restart':
         stepIndex.current = 0;
+        dispatch(updatePlay());
         break;
 
       case 'repeatRange':
-        dispatch(updateRepeat(repeat === 32 ? 64 : 32));
+        dispatch(updateRepeat(repeat === 31 ? 63 : 31));
         break;
 
       default:
@@ -101,7 +95,7 @@ function MixEditorHeader() {
         <Exit>
           <a href="/">Exit</a>
         </Exit>
-        <Title value={title} onBlur={handleTitle} />
+        <TitleInputBox />
         <StyledSaveButton
           text="Save"
           onClick={saveMusicData}
@@ -116,31 +110,24 @@ function MixEditorHeader() {
             text={'▶️'}
             id="play"
             onClick={handlePlay}
-            width={35}
+            width={50}
             height={35}
             buttonColor={'black'}
             disabled={isPlaying ? true : false}
           />
           <StyledPlayButton
-            text={'II'}
-            id="play"
+            text={'◼️'}
+            id="restart"
             onClick={handlePlay}
-            width={35}
+            width={50}
             height={35}
             buttonColor={'black'}
             disabled={isPlaying ? false : true}
           />
-          <StyledPlayButton
-            text={'◼️'}
-            id="restart"
-            onClick={handlePlay}
-            width={35}
-            height={35}
-            buttonColor={'black'}
-          />
         </div>
+        <BpmInputBox />
         <StyledPlayButton
-          text={repeat === 32 ? 'Repeat: A' : 'Repeat: A - B'}
+          text={repeat === 31 ? 'Repeat: A' : 'Repeat: A - B'}
           id="repeatRange"
           onClick={handlePlay}
           width={100}
@@ -181,26 +168,6 @@ const Exit = styled.div`
   &:hover {
     color: #c20101;
     border-right-color: #c20101;
-  }
-`;
-
-const Title = styled.input`
-  width: 400px;
-  height: 30px;
-  margin: auto;
-  outline: none;
-  background: #33393f;
-  color: white;
-  font-size: 18px;
-  text-align: center;
-  transition: background 0.3s, box-shadow 0.3s;
-
-  &:hover {
-    background: #474747;
-  }
-
-  &:focus {
-    background: #292929;
   }
 `;
 
