@@ -75,8 +75,8 @@ const initialState = {
   isPlaying: false,
   tracks: [],
   currentTrack: null,
-  initialStep: Array(16).fill(0),
-  repeat: 32,
+  initialStep: Array(64).fill(0),
+  repeat: 31,
   sampler: {},
 };
 
@@ -110,6 +110,7 @@ const mixEditor = handleActions(
       tracks: state.tracks
         .slice(0, action.payload)
         .concat(state.tracks.slice(action.payload + 1)),
+      currentTrack: state.tracks.length ? null : 0,
     }),
     [UPDATE_STEP]: (state, { payload: newTrack }) => ({
       ...state,
@@ -149,8 +150,14 @@ const mixEditor = handleActions(
       ...state,
       tracks: state.tracks.map((track, index) =>
         index === action.payload
-          ? { ...track, mute: (track.mute = false) }
-          : { ...track, mute: (track.mute = true) },
+          ? {
+              ...track,
+              mute: (track.mute = false),
+            }
+          : {
+              ...track,
+              mute: (track.mute = true),
+            },
       ),
     }),
     [UPDATE_TITLE]: (state, action) => ({
