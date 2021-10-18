@@ -7,13 +7,11 @@ import * as Tone from 'tone';
 
 import Button from './common/Button';
 import Error from './common/Error';
-import InputBox from './InputBox';
 
 import {
   updatePlay,
   updateRepeat,
   putMusicData,
-  updateBpm,
   updateTitle,
 } from '../modules/mixEditor';
 
@@ -73,12 +71,6 @@ function MixEditorHeader() {
 
   function handleTitle(newTitle) {
     dispatch(updateTitle(newTitle));
-  }
-
-  function handleBpm(ev) {
-    ev.preventDefault();
-
-    dispatch(updateBpm(rangeValue));
   }
 
   function handlePlay(ev) {
@@ -147,7 +139,6 @@ function MixEditorHeader() {
             buttonColor={'black'}
           />
         </div>
-        <InputBox value={bpm} onBlur={handleBpm} />
         <StyledPlayButton
           text={repeat === 32 ? 'Repeat: A' : 'Repeat: A - B'}
           id="repeatRange"

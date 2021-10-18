@@ -58,13 +58,6 @@
         "maxBOF": 0
       }
     ],
-    "indent": [
-      "warn",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
     "comma-dangle": ["warn", "always-multiline"]
   },
   "overrides": [
