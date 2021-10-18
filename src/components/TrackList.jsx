@@ -68,11 +68,11 @@ function TrackList() {
         break;
 
       case 'mute':
-        dispatch(updateTrackMute(trackIndex));
+        dispatch(updateTrackMute(parseInt(trackIndex)));
         break;
 
       case 'solo':
-        dispatch(updateTrackSolo(trackIndex));
+        dispatch(updateTrackSolo(parseInt(trackIndex)));
         break;
 
       case 'delete':
@@ -88,38 +88,39 @@ function TrackList() {
     <Wrapper>
       <AddTrack onClick={openTrackModal}>+ Add Track</AddTrack>
       <TrackListWrapper>
-        {tracks.map((tool, trackIndex) => {
-          return (
-            <Track key={trackIndex}>
-              <div className="effect">
-                <div
-                  className="mute"
-                  id={`mute-${trackIndex}`}
-                  onClick={handleTrack}>
-                  M
+        {tracks &&
+          tracks.map((tool, trackIndex) => {
+            return (
+              <Track key={trackIndex}>
+                <div className="effect">
+                  <div
+                    className="mute"
+                    id={`mute-${trackIndex}`}
+                    onClick={handleTrack}>
+                    M
+                  </div>
+                  <div
+                    className="mute"
+                    id={`solo-${trackIndex}`}
+                    onClick={handleTrack}>
+                    S
+                  </div>
                 </div>
                 <div
-                  className="mute"
-                  id={`solo-${trackIndex}`}
+                  className="tool-name"
+                  id={`currentTrack-${trackIndex}`}
                   onClick={handleTrack}>
-                  S
+                  {tool.name}
                 </div>
-              </div>
-              <div
-                className="tool-name"
-                id={`currentTrack-${trackIndex}`}
-                onClick={handleTrack}>
-                {tool.name}
-              </div>
-              <div
-                className="delete"
-                id={`delete-${trackIndex}`}
-                onClick={handleTrack}>
-                x
-              </div>
-            </Track>
-          );
-        })}
+                <div
+                  className="delete"
+                  id={`delete-${trackIndex}`}
+                  onClick={handleTrack}>
+                  x
+                </div>
+              </Track>
+            );
+          })}
       </TrackListWrapper>
       {isLoading && <Loading />}
     </Wrapper>

@@ -11,12 +11,13 @@ function StepSequencer() {
   const { tracks, currentTrack, bpm, repeat, sampler } = useSelector(
     (state) => state.mixEditor,
   );
-  const newTrack = tracks[currentTrack];
-  const { codeName, stepsMap, midiSteps, name } = newTrack;
   const [playing, setPlaying] = useState(false);
   const [partToggle, setPartToggle] = useState('A');
   const stepIndexRef = useRef(0);
   const dispatch = useDispatch();
+
+  const newTrack = tracks[currentTrack];
+  const { codeName, stepsMap, midiSteps, name } = newTrack;
 
   Tone.Transport.bpm.value = bpm;
 
@@ -43,11 +44,11 @@ function StepSequencer() {
       }
     });
 
-    if (stepIndexRef.current >= 32) {
+    if (stepIndexRef.current >= 31) {
       setPartToggle('B');
     }
 
-    if (stepIndexRef.current < 32) {
+    if (stepIndexRef.current < 31) {
       setPartToggle('A');
     }
 
@@ -64,11 +65,24 @@ function StepSequencer() {
       setIndexSet = setIndexSet + 32;
     }
 
-    const midiBox = Math.ceil(setIndexSet / 4);
-    newMidiStep[midiBox] = 1;
-
     newStep[codes].steps[setIndexSet] =
       newStep[codes].steps[setIndexSet] === 0 ? 1 : 0;
+
+    const midiBox = Math.floor(setIndexSet / 4);
+
+    const targetMidi = [];
+    newStep.map((note) => {
+      const { steps } = note;
+      const targetSteps = steps.slice(midiBox * 4, midiBox * 4 + 4);
+
+      return targetMidi.push(...targetSteps);
+    });
+
+    if (targetMidi.indexOf(1) > 1) {
+      newMidiStep[midiBox] = 1;
+    } else {
+      newMidiStep[midiBox] = 0;
+    }
 
     sampler[name].triggerAttackRelease(codeName[codes], 1);
 
