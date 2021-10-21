@@ -21,15 +21,15 @@ function ToolSetModal({ onSubmit }) {
         height={90}
       />
       <Button
-        text="Bass"
-        id="bass"
+        text="Chords"
+        id="chords"
         onClick={setInstrument}
         width={200}
         height={90}
       />
       <Button
-        text="Chords"
-        id="chords"
+        text="Bass"
+        id="bass"
         onClick={setInstrument}
         width={200}
         height={90}
