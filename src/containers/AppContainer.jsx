@@ -20,7 +20,7 @@ function AppContainer() {
             <Route exact path="/">
               <LandingContainer />
             </Route>
-            <Route path="/mixEditor/:musicId">
+            <Route exact path="/mixEditor/:musicId">
               <MixEditorContainer />
             </Route>
             <Route path="*">
@@ -33,8 +33,9 @@ function AppContainer() {
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled.div`
   display: block;
+  height: 100vh;
 `;
 
 export default AppContainer;

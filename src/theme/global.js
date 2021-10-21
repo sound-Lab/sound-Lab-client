@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
 
   html, body {
     width: 100%;
-    overflow: hidden;
+    height: 100%;
   }
 
   a {
