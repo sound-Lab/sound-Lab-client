@@ -98,7 +98,7 @@ function MixEditorHeader() {
           const step = track.steps[stepIndex.current];
 
           if (step === 1) {
-            sampler[name].triggerAttackRelease(codeName[index]);
+            sampler[name].triggerAttackRelease(codeName[index], 0.5);
           }
 
           if (stepIndex.current === 0) {

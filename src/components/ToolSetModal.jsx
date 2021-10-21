@@ -28,6 +28,13 @@ function ToolSetModal({ onSubmit }) {
         height={90}
       />
       <Button
+        text="Chords"
+        id="chords"
+        onClick={setInstrument}
+        width={200}
+        height={90}
+      />
+      <Button
         text="Piano"
         id="piano"
         onClick={setInstrument}
@@ -40,7 +47,7 @@ function ToolSetModal({ onSubmit }) {
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   width: 100%;
   height: 70%;
 `;

@@ -106,7 +106,7 @@ const Header = styled.div`
 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: animate 10s infinite linear;
+    animation: animate 5s infinite linear;
     background-size: 1000%;
   }
 
