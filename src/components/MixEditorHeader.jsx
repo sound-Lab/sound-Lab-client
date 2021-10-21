@@ -13,17 +13,17 @@ import Error from './common/Error';
 
 import {
   updatePlay,
-  updateRepeat,
   putMusicData,
   upCurrentPart,
   deleteMusicData,
 } from '../modules/mixEditor';
+import { deleteInstrumentData } from '../modules/instrument';
 
 function MixEditorHeader() {
   const [isSave, setIsSave] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const { handleModal } = useContext(ModalContext);
-  const { tracks, isPlaying, bpm, repeat, sampler, title } = useSelector(
+  const { tracks, isPlaying, bpm, sampler, title } = useSelector(
     (state) => state.mixEditor,
   );
   const { musicId } = useParams();
@@ -45,7 +45,7 @@ function MixEditorHeader() {
   useEffect(() => {
     Tone.Transport.cancel();
     Tone.Transport.scheduleRepeat(handleStart, '16n');
-  }, [tracks, isPlaying, repeat]);
+  }, [tracks, isPlaying]);
 
   useEffect(() => {
     if (!isSave && !isDelete) {
@@ -59,6 +59,7 @@ function MixEditorHeader() {
 
     if (isDelete) {
       handleModal(null);
+      dispatch(deleteInstrumentData());
       dispatch(deleteMusicData(musicId));
     }
 
@@ -111,8 +112,7 @@ function MixEditorHeader() {
       }
     });
 
-    stepIndex.current =
-      stepIndex.current === repeat ? 0 : stepIndex.current + 1;
+    stepIndex.current = stepIndex.current === 63 ? 0 : stepIndex.current + 1;
   }
 
   function handlePlay(ev) {
@@ -127,10 +127,6 @@ function MixEditorHeader() {
       case 'restart':
         stepIndex.current = 0;
         dispatch(updatePlay());
-        break;
-
-      case 'repeatRange':
-        dispatch(updateRepeat(repeat === 31 ? 63 : 31));
         break;
 
       default:
@@ -179,14 +175,6 @@ function MixEditorHeader() {
           />
         </div>
         <BpmInputBox />
-        <StyledPlayButton
-          text={repeat === 31 ? 'Repeat: A' : 'Repeat: A - B'}
-          id="repeatRange"
-          onClick={handlePlay}
-          width={100}
-          height={35}
-          buttonColor={'black'}
-        />
       </EditorToolBar>
     </Wrapper>
   );

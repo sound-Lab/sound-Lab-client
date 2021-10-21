@@ -36,7 +36,6 @@ function BpmInputBox() {
         type="number"
         min="40"
         max="240"
-        className="label"
         value={rangeValue}
         onChange={handleChange}
         onBlur={submitData}

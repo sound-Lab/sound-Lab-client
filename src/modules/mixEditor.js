@@ -110,6 +110,9 @@ const mixEditor = handleActions(
       ...state,
       id: (state.id = null),
       title: (state.title = null),
+      sampler: (state.sampler = {}),
+      tracks: (state.title = []),
+      currentTrack: (state.currentTrack = null),
     }),
     [SET_TRACK]: (state, action) => ({
       ...state,

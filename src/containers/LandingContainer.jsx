@@ -59,8 +59,14 @@ function LandingContainer() {
         <>
           <Header>
             <h1>Sound LAB</h1>
+            <h3>Think and Make like a musician 🎧</h3>
           </Header>
-          <Button text="+ Create" onClick={modalOpen}></Button>
+          <StyledButton
+            text="+ Create"
+            width={80}
+            height={40}
+            onClick={modalOpen}
+          />
         </>
       )}
     </Wrapper>
@@ -68,11 +74,81 @@ function LandingContainer() {
 }
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
-
-  background-color: ${({ theme }) => theme.mainColor.surfieGreen};
+  background-color: #111214;
 `;
 
-const Header = styled.div``;
+const Header = styled.div`
+  color: #ffffff8d;
+  text-align: center;
+
+  h1 {
+    display: inline-block;
+    margin: 0 auto;
+    font-size: 100px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: arial;
+    line-height: 100px;
+    background-image: linear-gradient(
+      to right,
+      #00f,
+      #00ffd5,
+      #51ff00,
+      #00ffd5,
+      #00f
+    );
+    text-align: center;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animate 10s infinite linear;
+    background-size: 1000%;
+  }
+
+  h3 {
+    font-weight: 400;
+    color: #ffffff;
+    opacity: 0.6;
+  }
+
+  @keyframes animate {
+    0% {
+      background-position: 0% 0%;
+    }
+
+    10% {
+      background-position: 10% 10%;
+    }
+
+    50% {
+      background-position: 50% 50%;
+    }
+
+    100% {
+      background-position: 100% 100%;
+    }
+
+    50% {
+      background-position: 50% 50%;
+    }
+
+    10% {
+      background-position: 10% 10%;
+    }
+
+    0% {
+      background-position: 0% 0%;
+    }
+  }
+`;
+
+const StyledButton = styled(Button)`
+  margin: 30px;
+`;
 
 export default LandingContainer;

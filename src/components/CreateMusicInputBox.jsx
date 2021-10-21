@@ -59,18 +59,15 @@ function CreateMusicInputBox({ onSubmit }) {
 
   return (
     <Wrapper>
-      <StyledForm>
-        <label>Title</label>
-        <input
-          type="text"
-          name="title"
-          placeholder="type in here"
-          value={inputValue.title}
-          onChange={handleChange}
-        />
-        <Button type="submit" text="submit" onClick={submitData} />
-        {isError && <ErrorMessage>{errMessage}</ErrorMessage>}
-      </StyledForm>
+      Title
+      <Input
+        type="text"
+        className="label"
+        value={inputValue.title}
+        onChange={handleChange}
+      />
+      <StyledButton type="submit" text="submit" onClick={submitData} />
+      {isError && <ErrorMessage>{errMessage}</ErrorMessage>}
     </Wrapper>
   );
 }
@@ -81,26 +78,35 @@ CreateMusicInputBox.propTypes = {
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
 
-const StyledForm = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+const Input = styled.input`
+  width: 200px;
+  height: 30px;
+  margin: 10px;
+  border-bottom: solid 1px #ffffff8f;
+  outline: none;
+  background: #33393f;
+  text-align: center;
+  color: white;
+  font-size: 23px;
+  transition: background 0.3s;
 
-  input {
-    font-size: 18px;
-    margin: 10px 0px 20px 0px;
-    padding: 10px 10px 10px 5px;
-    display: block;
-    width: 300px;
-    border: none;
-    border-bottom: 1px solid #757575;
+  &:hover {
+    background: #464653;
   }
 
-  input:focus {
-    outline: none;
+  &:focus {
+    background: #393943;
   }
+`;
+
+const StyledButton = styled(Button)`
+  margin: 0;
 `;
 
 export default CreateMusicInputBox;
