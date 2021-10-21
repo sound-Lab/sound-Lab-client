@@ -1,21 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { updateError } from '../modules/mixEditor';
 
 import Button from './common/Button';
 import ErrorMessage from './common/ErrorMessage';
 
-function CreateMusicInputBox({ onSubmit, err }) {
+function CreateMusicInputBox({ onSubmit }) {
   const [isError, setError] = useState(false);
+  const [errMessage, setErrorMessage] = useState(null);
   const [inputValue, setInputValue] = useState({
     title: '',
   });
+  const { error } = useSelector((state) => state.mixEditor);
+  const { isLoading } = useSelector((state) => state.loading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error);
+      setError(true);
+      return;
+    }
+
+    return () => {
+      setErrorMessage(null);
+      setError(false);
+      dispatch(updateError());
+    };
+  }, [error, isLoading]);
 
   function submitData(ev) {
     ev.preventDefault();
 
     if (!inputValue.title) {
-      setError(err ? err : 'please input value');
+      setErrorMessage('please input value');
+      setError(true);
       return;
     }
 
@@ -27,6 +49,7 @@ function CreateMusicInputBox({ onSubmit, err }) {
     const { value } = target;
 
     setError(true);
+    setErrorMessage(null);
 
     setInputValue({
       ...inputValue,
@@ -46,7 +69,7 @@ function CreateMusicInputBox({ onSubmit, err }) {
           onChange={handleChange}
         />
         <Button type="submit" text="submit" onClick={submitData} />
-        {isError && <ErrorMessage>{isError}</ErrorMessage>}
+        {isError && <ErrorMessage>{errMessage}</ErrorMessage>}
       </StyledForm>
     </Wrapper>
   );
@@ -54,7 +77,6 @@ function CreateMusicInputBox({ onSubmit, err }) {
 
 CreateMusicInputBox.propTypes = {
   onSubmit: PropTypes.func,
-  err: PropTypes.string,
 };
 
 const Wrapper = styled.div`
