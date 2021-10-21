@@ -41,22 +41,24 @@ const ModalShadow = styled.div`
   top: 0px;
   width: 100%;
   height: 100%;
-  background-color: black;
-  opacity: 0.7;
+  background-color: #585858;
+  opacity: 0.5;
 `;
 
 const ModalContainer = styled.div`
   z-index: 5;
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
   top: calc(100% - 50%);
   left: calc(100% - 50%);
   width: 500px;
   height: calc(100% - 200px);
-  background-color: white;
+  border-radius: 10px;
+  background-color: #191b20;
+  color: white;
   transform: translate(-50%, -50%) scale(0);
   animation: show 0.25s ease forwards;
 
@@ -73,8 +75,8 @@ const CloseButton = styled.button`
   right: 10px;
   width: 50px;
   height: 50px;
-  border: solid 1px;
-  background-color: white;
+  color: white;
+  background-color: #191b20;
 `;
 
 export default Modal;
