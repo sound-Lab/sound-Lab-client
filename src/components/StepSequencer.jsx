@@ -20,6 +20,12 @@ function StepSequencer() {
   Tone.Transport.bpm.value = bpm;
 
   useEffect(() => {
+    if (!tracks[currentTrack]) {
+      return null;
+    }
+  }, [tracks, currentTrack]);
+
+  useEffect(() => {
     if (isPlaying) {
       setStartProgressBar(true);
     }

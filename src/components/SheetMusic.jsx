@@ -7,9 +7,9 @@ import SheetMusicBox from './SheetMusicBox';
 function SheetMusic() {
   const [startProgressBar, setStartProgressBar] = useState(false);
   const [progressTime, setProgressTime] = useState(8);
-  const [progressBarEndPoint, setProgressBarEndPoint] = useState(50);
-  const { tracks, isPlaying, currentTrack, bpm, initialStep, repeat } =
-    useSelector((state) => state.mixEditor);
+  const { tracks, isPlaying, currentTrack, bpm, initialStep } = useSelector(
+    (state) => state.mixEditor,
+  );
 
   useEffect(() => {
     if (isPlaying) {
@@ -25,12 +25,10 @@ function SheetMusic() {
     if (!isPlaying) {
       return;
     }
-    const progressBarTime = repeat === 63 ? 16 : 8;
 
-    setProgressBarEndPoint(repeat === 63 ? 100 : 50);
-    setProgressTime((60 / bpm) * progressBarTime);
+    setProgressTime((60 / bpm) * 16);
     setInterval(setStartProgressBar(true), progressTime);
-  }, [startProgressBar, bpm, repeat, isPlaying, progressBarEndPoint]);
+  }, [startProgressBar, bpm, isPlaying]);
 
   return (
     <Wrapper>
@@ -42,9 +40,7 @@ function SheetMusic() {
         })}
       </Header>
       <ProgressBarContainer>
-        {startProgressBar && (
-          <ProgressBar time={progressTime} width={progressBarEndPoint} />
-        )}
+        {startProgressBar && <ProgressBar time={progressTime} />}
       </ProgressBarContainer>
       {tracks.map((track, index) => {
         const { midiSteps, name } = track;
@@ -100,16 +96,13 @@ const Header = styled.div`
 `;
 
 const ProgressBarContainer = styled.div`
-  width: ${(props) => {
-    return props.width;
-  }};
+  width: 100%;
   height: 10px;
   background: #ffffff26;
 `;
 
 const ProgressBar = styled.div`
   height: 10px;
-  max-width: 100%;
   background: #ff0404;
   border-bottom: solid 0.1px #ffffff26;
   animation: ${(props) => `progressAnimationStrike ${props.time}s linear`};
@@ -120,7 +113,7 @@ const ProgressBar = styled.div`
       width: 0;
     }
     to {
-      width: ${(props) => `${props.width}%`};
+      width: 100%;
     }
   }
 `;
