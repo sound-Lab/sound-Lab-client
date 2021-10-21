@@ -7,14 +7,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import AppContainer from './containers/AppContainer';
 import rootReducer, { root } from './modules';
-import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 
-const logger = createLogger();
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(logger, sagaMiddleware)),
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 sagaMiddleware.run(root);
 
