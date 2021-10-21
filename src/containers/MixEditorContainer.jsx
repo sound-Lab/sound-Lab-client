@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 
@@ -28,10 +28,23 @@ function MixEditorContainer() {
   const { isLoading } = useSelector((state) => state.loading);
   const { musicId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  window.history.pushState(null, '', location.href);
+
+  window.onpopstate = function () {
+    history.go(1);
+  };
 
   useEffect(() => {
     dispatch(getMusicData(musicId));
     dispatch(getInstrumentData());
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(sampler).length) {
+      setIsSampleLoading(true);
+    }
   }, []);
 
   useEffect(async () => {
@@ -66,7 +79,7 @@ function MixEditorContainer() {
 
     setIsSampleLoading(true);
     dispatch(setCurrentTrack(0));
-  }, [sampler]);
+  }, [sampler, isLoading]);
 
   return (
     <>
@@ -86,19 +99,20 @@ function MixEditorContainer() {
 }
 
 const MixEditorWrapper = styled.section`
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 40% 60%;
+  width: 100vw;
+  height: calc(100vh - 100px);
 `;
 
-const TrackWrapper = styled.div`
+const TrackWrapper = styled.article`
+  width: 100vw;
+  height: calc(100vh - 60vh);
   display: flex;
-  overflow: hidden;
+  background-color: #1b1d21;
 `;
 
-const ToolWrapper = styled.div`
-  height: 100%;
-  display: grid;
+const ToolWrapper = styled.article`
+  width: 100%;
+  height: calc(100vh - 40vh - 100px);
   background-color: #33393e;
 `;
 

@@ -6,16 +6,16 @@ import styled from 'styled-components';
 import { ModalContext } from '../context/ModalContext';
 import { postMusic } from '../modules/mixEditor';
 
-import CreateMusicInputBox from '../components/CreateMusicInputBox';
 import Button from '../components/common/Button';
 import Loading from '../components/common/Loading';
 import Error from '../components/common/Error';
+import CreateMusicInputBox from '../components/CreateMusicInputBox';
 
 function LandingContainer() {
   const [titleData, setTitleData] = useState(null);
   const { handleModal } = useContext(ModalContext);
   const { isLoading } = useSelector((state) => state.loading);
-  const { id } = useSelector((state) => state.mixEditor);
+  const { id, error } = useSelector((state) => state.mixEditor);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -27,7 +27,7 @@ function LandingContainer() {
     try {
       dispatch(postMusic(titleData.title));
     } catch (error) {
-      <Error error={error} />;
+      return <Error error={error} />;
     }
   }, [titleData]);
 
@@ -36,12 +36,16 @@ function LandingContainer() {
       return null;
     }
 
+    if (error) {
+      return null;
+    }
+
     history.push(`/mixEditor/${id}`);
 
     return () => {
       handleModal(null);
     };
-  }, [id, isLoading]);
+  }, [id, isLoading, error]);
 
   function modalOpen() {
     handleModal(<CreateMusicInputBox onSubmit={setTitleData} />);
@@ -52,16 +56,23 @@ function LandingContainer() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Button text="+ Create" onClick={modalOpen}></Button>
+        <>
+          <Header>
+            <h1>Sound LAB</h1>
+          </Header>
+          <Button text="+ Create" onClick={modalOpen}></Button>
+        </>
       )}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  display: flex;
   height: 100vh;
+
   background-color: ${({ theme }) => theme.mainColor.surfieGreen};
 `;
+
+const Header = styled.div``;
 
 export default LandingContainer;
