@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 
-import { updateStep } from '../modules/mixEditor';
+import { updateStep, upCurrentPart } from '../modules/mixEditor';
 
 import Button from './common/Button';
 
 function StepSequencer() {
-  const { tracks, currentTrack, bpm, repeat, sampler } = useSelector(
-    (state) => state.mixEditor,
-  );
-  const [playing, setPlaying] = useState(false);
-  const [partToggle, setPartToggle] = useState('A');
-  const stepIndexRef = useRef(0);
+  const { tracks, isPlaying, currentTrack, bpm, repeat, sampler, currentPart } =
+    useSelector((state) => state.mixEditor);
+  const [startProgressBar, setStartProgressBar] = useState(false);
+  const [progressTime, setProgressTime] = useState(8);
   const dispatch = useDispatch();
 
   const newTrack = tracks[currentTrack];
@@ -22,46 +20,30 @@ function StepSequencer() {
   Tone.Transport.bpm.value = bpm;
 
   useEffect(() => {
-    playing ? Tone.Transport.start() : Tone.Transport.stop();
-    Tone.Transport.clear();
+    if (isPlaying) {
+      setStartProgressBar(true);
+    }
 
     return () => {
-      Tone.Transport.stop();
+      setStartProgressBar(false);
     };
-  }, [playing]);
+  }, [isPlaying]);
 
   useEffect(() => {
-    Tone.Transport.cancel();
-    Tone.Transport.scheduleRepeat(handleStart, '16n');
-  }, [playing]);
-
-  function handleStart() {
-    stepsMap.forEach((track, index) => {
-      const step = track.steps[stepIndexRef.current];
-
-      if (step === 1) {
-        sampler[name].triggerAttackRelease(codeName[index]);
-      }
-    });
-
-    if (stepIndexRef.current >= 31) {
-      setPartToggle('B');
+    if (!isPlaying) {
+      return;
     }
 
-    if (stepIndexRef.current < 31) {
-      setPartToggle('A');
-    }
-
-    stepIndexRef.current =
-      stepIndexRef.current === repeat ? 0 : stepIndexRef.current + 1;
-  }
+    setProgressTime((60 / bpm) * 8);
+    setInterval(setStartProgressBar(true), progressTime);
+  }, [startProgressBar, bpm, repeat]);
 
   function updateStepTrack(codes, stepIndex) {
     const newMidiStep = [...midiSteps];
     const newStep = [...stepsMap];
     let setIndexSet = stepIndex;
 
-    if (partToggle === 'B') {
+    if (currentPart === 'B') {
       setIndexSet = setIndexSet + 32;
     }
 
@@ -78,7 +60,7 @@ function StepSequencer() {
       return targetMidi.push(...targetSteps);
     });
 
-    if (targetMidi.indexOf(1) > 1) {
+    if (targetMidi.indexOf(1) >= 0) {
       newMidiStep[midiBox] = 1;
     } else {
       newMidiStep[midiBox] = 0;
@@ -92,11 +74,8 @@ function StepSequencer() {
   }
 
   function togglePart() {
-    setPartToggle((part) => (part === 'A' ? 'B' : 'A'));
-  }
-
-  function handleHat() {
-    setPlaying((playing) => !playing);
+    const part = currentPart === 'A' ? 'B' : 'A';
+    dispatch(upCurrentPart(part));
   }
 
   function resetStep() {
@@ -113,115 +92,172 @@ function StepSequencer() {
   }
 
   return (
-    <Wrapper>
-      <ButtonContainer>
-        <Button
-          text={playing ? 'II' : '▶️'}
-          onClick={handleHat}
-          width={40}
-          height={35}
-        />
-        <Button
-          text={partToggle === 'A' ? 'A' : 'B'}
-          onClick={togglePart}
-          width={40}
-          height={35}
-        />
-        <Button text={'reset'} onClick={resetStep} width={40} height={35} />
-      </ButtonContainer>
-      <SoundBoxContainer>
-        {stepsMap &&
-          stepsMap.map((track, index) => {
-            const stepPart =
-              partToggle === 'A'
-                ? track.steps.slice(0, 32)
-                : track.steps.slice(32, 64);
+    <>
+      <Header />
+      <Wrapper>
+        <ButtonContainer>
+          <Button
+            text={currentPart}
+            onClick={togglePart}
+            width={100}
+            height={35}
+          />
+          <Button text={'reset'} onClick={resetStep} width={100} height={35} />
+        </ButtonContainer>
+        <Sequencer>
+          <ProgressBarContainer>
+            {startProgressBar && isPlaying && (
+              <ProgressBar time={progressTime} />
+            )}
+          </ProgressBarContainer>
 
-            return (
-              <div key={`track-${index}`}>
-                {stepPart.map((step, stepIndex) => (
-                  <SoundBox
-                    key={`step-${index}-${stepIndex}`}
-                    id={`step-${index}-${stepIndex}`}
-                    onClick={() => {
-                      updateStepTrack(index, stepIndex);
-                    }}
-                    className={step === 0 ? null : 'is-active'}
-                  />
-                ))}
-              </div>
-            );
-          })}
-      </SoundBoxContainer>
-    </Wrapper>
+          {stepsMap &&
+            stepsMap.map((track, index) => {
+              const stepPart =
+                currentPart === 'A'
+                  ? track.steps.slice(0, 32)
+                  : track.steps.slice(32, 64);
+
+              return (
+                <SoundBox key={`track-${index}`}>
+                  {stepPart.map((step, stepIndex) => {
+                    return (
+                      <div
+                        key={`step-${index}-${stepIndex}`}
+                        id={`step-${index}-${stepIndex}`}
+                        onClick={() => {
+                          updateStepTrack(index, stepIndex);
+                        }}
+                        className={step === 0 ? null : 'is-active'}
+                      />
+                    );
+                  })}
+                </SoundBox>
+              );
+            })}
+        </Sequencer>
+      </Wrapper>
+    </>
   );
 }
+const Header = styled.div`
+  width: 100%;
+  height: 10px;
+  box-sizing: content-box;
+  border-top: solid 1px #ffffff26;
+  border-bottom: solid 1px #ffffff26;
+`;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 10px);
   display: flex;
-
-  margin: 20px;
-  background-color: #33393e;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  background-color: #0000008d;
 `;
 
-const ButtonContainer = styled.ul`
-  width: 10%;
-  margin-right: 10px;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  height: 100%;
+  padding: 50px;
+  box-sizing: border-box;
+  border-right: solid 1px #ffffff26;
+  background-color: #33393f;
 `;
 
-const SoundBoxContainer = styled.div`
-  width: 100vh;
-  height: 100vh;
-
-  div {
-    width: 980px;
-    height: 30px;
-    display: flex;
-    border: solid 3px #33393e;
-  }
+const Sequencer = styled.div`
+  width: calc(100% - 200px);
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px 40px 20px 40px;
+  overflow: scroll;
 `;
 
 const SoundBox = styled.div`
-  background-color: #ffffffc5;
-  border-radius: 50%;
-  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 
-  @keyframes scaleUp {
-    0% {
-      transform: scale(1, 1);
+  > div {
+    width: 35px;
+    height: 35px;
+    background-color: #33393f;
+    box-sizing: border-box;
+    border: solid 1px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:nth-child(4n) {
+      margin-right: 1%;
     }
-    50% {
-      transform: scale(1.2, 1.2);
+
+    @keyframes scaleUp {
+      0% {
+        transform: scale(1, 1);
+      }
+      50% {
+        transform: scale(1.2, 1.2);
+      }
+      100% {
+        transform: scale(1, 1);
+      }
     }
-    100% {
-      transform: scale(1, 1);
+
+    @keyframes scaleDown {
+      0% {
+        transform: scale(1, 1);
+      }
+      50% {
+        transform: scale(0.8, 0.8);
+      }
+      100% {
+        transform: scale(1, 1);
+      }
+    }
+
+    &:hover {
+      background: ${({ theme }) => theme.mainColor.surfieGreen};
+      animation-name: scaleDown;
+      animation-duration: 0.15s;
+    }
+
+    &.is-active {
+      background: ${({ theme }) => theme.mainColor.orangeRed};
+      animation-name: scaleUp;
+      animation-duration: 0.15s;
     }
   }
+`;
 
-  @keyframes scaleDown {
-    0% {
-      transform: scale(1, 1);
-    }
-    50% {
-      transform: scale(0.8, 0.8);
-    }
-    100% {
-      transform: scale(1, 1);
-    }
-  }
+const ProgressBarContainer = styled.div`
+  width: 99%;
+  height: 10px;
+  margin-bottom: 20px;
+  background: #ffffff26;
+`;
 
-  &:hover {
-    background: ${({ theme }) => theme.mainColor.surfieGreen};
-    animation-name: scaleDown;
-    animation-duration: 0.15s;
-  }
+const ProgressBar = styled.div`
+  width: 100%;
+  height: 10px;
+  border-bottom: solid 0.1px #ffffff26;
+  background: #ff0404;
+  animation: ${(props) => {
+    return `progressAnimationStrike ${props.time}s linear`;
+  }};
+  animation-iteration-count: infinite;
 
-  &.is-active {
-    background: ${({ theme }) => theme.mainColor.orangeRed};
-    animation-name: scaleUp;
-    animation-duration: 0.15s;
+  @keyframes progressAnimationStrike {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }
 `;
 
