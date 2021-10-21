@@ -14,6 +14,10 @@ export async function getInstrumentSoundData() {
 }
 
 export async function putMusicData(data) {
-  const { musicId, tracks } = data;
-  return axios.put(`${API.URL}/mixEditor/music/${musicId}`, { tracks });
+  const { musicId, title, tracks } = data;
+  return axios.put(`${API.URL}/mixEditor/music/${musicId}`, { tracks, title });
+}
+
+export async function deleteMusicData(id) {
+  return axios.delete(`${API.URL}/mixEditor/music/${id}`);
 }

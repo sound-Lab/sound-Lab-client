@@ -18,7 +18,7 @@ function createRequest(type, request) {
     } catch (error) {
       yield put({
         type: FAILURE,
-        payload: error,
+        payload: error.response.data,
         error: true,
       });
     }
