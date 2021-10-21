@@ -8,10 +8,8 @@ function SheetMusic() {
   const [startProgressBar, setStartProgressBar] = useState(false);
   const [progressTime, setProgressTime] = useState(8);
   const [progressBarEndPoint, setProgressBarEndPoint] = useState(50);
-  const { tracks, isPlaying, bpm, initialStep, repeat } = useSelector(
-    (state) => state.mixEditor,
-  );
-  const midi = Array(4).fill(0);
+  const { tracks, isPlaying, currentTrack, bpm, initialStep, repeat } =
+    useSelector((state) => state.mixEditor);
 
   useEffect(() => {
     if (isPlaying) {
@@ -27,19 +25,20 @@ function SheetMusic() {
     if (!isPlaying) {
       return;
     }
-
     const progressBarTime = repeat === 63 ? 16 : 8;
 
     setProgressBarEndPoint(repeat === 63 ? 100 : 50);
     setProgressTime((60 / bpm) * progressBarTime);
     setInterval(setStartProgressBar(true), progressTime);
-  }, [startProgressBar, bpm, repeat]);
+  }, [startProgressBar, bpm, repeat, isPlaying, progressBarEndPoint]);
 
   return (
     <Wrapper>
       <Header>
-        {midi.map((step, index) => {
-          return <div key={index}>{index + 1}</div>;
+        {initialStep.map((step, index) => {
+          if (index % 16 === 0) {
+            return <div key={index}>{Math.floor(index / 16) + 1}</div>;
+          }
         })}
       </Header>
       <ProgressBarContainer>
@@ -47,23 +46,26 @@ function SheetMusic() {
           <ProgressBar time={progressTime} width={progressBarEndPoint} />
         )}
       </ProgressBarContainer>
-      {tracks.map((step, index) => {
-        const { midiSteps } = step;
+      {tracks.map((track, index) => {
+        const { midiSteps, name } = track;
 
         return (
-          <Sheet key={index} id={index}>
+          <Sheet key={index} id={index} currentTrack={currentTrack}>
             {initialStep.map((step, index) => {
-              return <SheetMidi key={index}></SheetMidi>;
+              return <SheetMidi key={index} />;
             })}
             {midiSteps.map((midistep, midiindex) => {
-              return (
-                <SheetMusicBox
-                  key={midiindex}
-                  left={midiindex}
-                  width={midistep}
-                  top={index}
-                />
-              );
+              if (midistep) {
+                return (
+                  <SheetMusicBox
+                    key={midiindex}
+                    left={midiindex}
+                    width={midistep}
+                    top={index}
+                    currentInstrument={name}
+                  />
+                );
+              }
             })}
           </Sheet>
         );
@@ -72,36 +74,44 @@ function SheetMusic() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: #6b6a6a5a;
+  width: 100vw;
+  margin-left: 5px;
+  overflow: scroll;
 `;
 
 const Header = styled.div`
   width: 100%;
   height: 30px;
   display: flex;
-  background: #ffffffa7;
+  background-color: #33393e;
+  border-bottom: solid 0.1px #ffffff26;
+  box-shadow: inset 0px 20px 0px 0px #0c0c0c3b;
 
   > div {
     width: 25%;
     height: 100%;
-    border: 0.2px solid #000000dd;
+    color: white;
+    font-weight: 300;
+    font-size: 14px;
+    border-left: solid 0.1px #ffffff26;
   }
 `;
 
 const ProgressBarContainer = styled.div`
-  width: 100%;
+  width: ${(props) => {
+    return props.width;
+  }};
   height: 10px;
-  background: rgba(0, 0, 0, 0.25);
+  background: #ffffff26;
 `;
 
 const ProgressBar = styled.div`
-  width: 100%;
   height: 10px;
+  max-width: 100%;
   background: #ff0404;
+  border-bottom: solid 0.1px #ffffff26;
   animation: ${(props) => `progressAnimationStrike ${props.time}s linear`};
   animation-iteration-count: infinite;
 
@@ -119,15 +129,16 @@ const Sheet = styled.div`
   width: 100%;
   height: 80px;
   display: flex;
-  background: white;
-  border-bottom: 0.3px solid #575656;
+  background-color: ${(props) =>
+    props.id === parseInt(props.currentTrack) ? '#33393ef8' : '#1b1d21'};
+  border-bottom: solid 0.1px #ffffff37;
+  transition: background 0.3s;
 `;
 
 const SheetMidi = styled.div`
   width: 1.56%;
   height: 100%;
-  border-top: 0.1px solid #f0f0f111;
-  border-left: 0.1px solid #7979797a;
+  border-left: solid 0.25px #ffffff14;
 `;
 
 export default React.memo(SheetMusic);
