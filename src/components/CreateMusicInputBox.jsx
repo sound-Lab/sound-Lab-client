@@ -20,7 +20,7 @@ function CreateMusicInputBox({ onSubmit }) {
 
   useEffect(() => {
     if (error) {
-      setErrorMessage('already exist');
+      setErrorMessage('This title is already in use');
       setError(true);
       return;
     }
