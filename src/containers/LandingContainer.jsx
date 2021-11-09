@@ -79,11 +79,10 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #111214;
+  background-color: ${({ theme }) => theme.mainColor.landingNavy};
 `;
 
 const Header = styled.div`
-  color: #ffffff8d;
   text-align: center;
 
   h1 {
@@ -112,7 +111,7 @@ const Header = styled.div`
 
   h3 {
     font-weight: 400;
-    color: #ffffff;
+    color: ${({ theme }) => theme.grayColors.white};
     opacity: 0.6;
   }
 

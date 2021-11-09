@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { updateBpm } from '../modules/mixEditor';
 import ErrorMessage from './common/ErrorMessage';
 
+import { ERROR_MESSAGE } from '../constants/errorMessage';
+
 function BpmInputBox() {
   const { bpm } = useSelector((state) => state.mixEditor);
   const [rangeValue, setInputValue] = useState(bpm);
@@ -15,7 +17,7 @@ function BpmInputBox() {
     ev.preventDefault();
 
     if (!rangeValue) {
-      setError('please input number');
+      setError(ERROR_MESSAGE.INPUT_TITLE);
       return;
     }
 
@@ -52,25 +54,25 @@ const Wrapper = styled.div`
   justify-content: center;
   margin: 5px;
   height: 30px;
-  border-bottom: solid 0.5px #dddddd67;
-  color: #ffffffab;
+  border-bottom: solid 0.5px ${({ theme }) => theme.grayColors.pewter};
+  color: ${({ theme }) => theme.grayColors.greige};
 `;
 
 const Input = styled.input`
   width: 130px;
   outline: none;
-  background: #33393f;
+  background: ${({ theme }) => theme.grayColors.charcoal};
   text-align: center;
-  color: white;
+  color: ${({ theme }) => theme.grayColors.white};
   font-size: 14px;
   transition: background 0.3s;
 
   &:hover {
-    background: #464653;
+    background: ${({ theme }) => theme.grayColors.pewter};
   }
 
   &:focus {
-    background: #393943;
+    background: ${({ theme }) => theme.grayColors.iron};
   }
 `;
 

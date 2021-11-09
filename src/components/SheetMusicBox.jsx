@@ -37,19 +37,19 @@ const MusicBarBox = styled.div`
   height: 79px;
   box-sizing: border-box;
   border-radius: 8px;
-  border: solid 0.1px #ffffff94;
+  border: solid 0.1px ${({ theme }) => theme.grayColors.greige};
   align-items: center;
   justify-content: center;
   background-color: ${(props) =>
     props.part === 'A' ? props.color.A : props.color.B};
-  color: white;
+  color: ${({ theme }) => theme.grayColors.white};
   font-weight: 500;
   font-size: 20px;
   transition: border 0.3s;
   opacity: 0.6;
 
   &:hover {
-    border: solid 3px #ffffff;
+    border: solid 3px ${({ theme }) => theme.grayColors.white};
   }
 `;
 

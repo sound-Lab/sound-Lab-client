@@ -31,15 +31,13 @@ function TrackList() {
       (tool) => tool.name === selectedInstrument,
     );
 
-    const { codeName, midiSteps, stepsMap } = initialSteps(
-      selectedInstrumentData,
-    );
+    const { codeName, bars, steps } = initialSteps(selectedInstrumentData);
 
     const track = {
       name: selectedInstrument,
       codeName,
-      midiSteps,
-      stepsMap,
+      bars,
+      steps,
       mute: false,
     };
 

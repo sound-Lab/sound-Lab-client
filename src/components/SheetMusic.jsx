@@ -43,20 +43,20 @@ function SheetMusic() {
         {startProgressBar && <ProgressBar time={progressTime} />}
       </ProgressBarContainer>
       {tracks.map((track, index) => {
-        const { midiSteps, name } = track;
+        const { bars, name } = track;
 
         return (
           <Sheet key={index} id={index} currentTrack={currentTrack}>
             {initialStep.map((step, index) => {
               return <SheetMidi key={index} />;
             })}
-            {midiSteps.map((midistep, midiindex) => {
-              if (midistep) {
+            {bars.map((bar, barIndex) => {
+              if (bar) {
                 return (
                   <SheetMusicBox
-                    key={midiindex}
-                    left={midiindex}
-                    width={midistep}
+                    key={barIndex}
+                    left={barIndex}
+                    width={bar}
                     top={index}
                     currentInstrument={name}
                   />
@@ -81,30 +81,31 @@ const Header = styled.div`
   width: 100%;
   height: 30px;
   display: flex;
-  background-color: #33393e;
-  border-bottom: solid 0.1px #ffffff26;
-  box-shadow: inset 0px 20px 0px 0px #0c0c0c3b;
+  background-color: ${({ theme }) => theme.grayColors.steel};
+  border-bottom: solid 0.1px ${({ theme }) => theme.grayColors.shadow};
+  box-shadow: inset 0px 20px 0px 0px
+    ${({ theme }) => theme.grayColors.blackCharcoal};
 
   > div {
     width: 25%;
     height: 100%;
-    color: white;
+    color: ${({ theme }) => theme.grayColors.white};
     font-weight: 300;
     font-size: 14px;
-    border-left: solid 0.1px #ffffff26;
+    border-left: solid 0.1px ${({ theme }) => theme.grayColors.shadow};
   }
 `;
 
 const ProgressBarContainer = styled.div`
   width: 100%;
   height: 10px;
-  background: #ffffff26;
+  background: ${({ theme }) => theme.grayColors.shadow};
 `;
 
 const ProgressBar = styled.div`
   height: 10px;
-  background: #ff0404;
-  border-bottom: solid 0.1px #ffffff26;
+  background: ${({ theme }) => theme.mainColor.orangeRed};
+  border-bottom: solid 0.1px ${({ theme }) => theme.grayColors.shadow};
   animation: ${(props) => `progressAnimationStrike ${props.time}s linear`};
   animation-iteration-count: infinite;
 
@@ -124,14 +125,14 @@ const Sheet = styled.div`
   display: flex;
   background-color: ${(props) =>
     props.id === parseInt(props.currentTrack) ? '#33393ef8' : '#1b1d21'};
-  border-bottom: solid 0.1px #ffffff37;
+  border-bottom: solid 0.1px ${({ theme }) => theme.grayColors.shadowLight};
   transition: background 0.3s;
 `;
 
 const SheetMidi = styled.div`
   width: 1.56%;
   height: 100%;
-  border-left: solid 0.25px #ffffff14;
+  border-left: solid 0.25px ${({ theme }) => theme.grayColors.shadowDark};
 `;
 
 export default React.memo(SheetMusic);

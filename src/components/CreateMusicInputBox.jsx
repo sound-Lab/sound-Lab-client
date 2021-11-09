@@ -8,6 +8,8 @@ import { updateError } from '../modules/mixEditor';
 import Button from './common/Button';
 import ErrorMessage from './common/ErrorMessage';
 
+import { ERROR_MESSAGE } from '../constants/errorMessage';
+
 function CreateMusicInputBox({ onSubmit }) {
   const [isError, setError] = useState(false);
   const [errMessage, setErrorMessage] = useState(null);
@@ -20,7 +22,7 @@ function CreateMusicInputBox({ onSubmit }) {
 
   useEffect(() => {
     if (error) {
-      setErrorMessage('This title is already in use');
+      setErrorMessage(ERROR_MESSAGE.ALREADY_USE);
       setError(true);
       return;
     }
@@ -36,7 +38,7 @@ function CreateMusicInputBox({ onSubmit }) {
     ev.preventDefault();
 
     if (!inputValue.title) {
-      setErrorMessage('please input value');
+      setErrorMessage(ERROR_MESSAGE.INPUT_TITLE);
       setError(true);
       return;
     }
@@ -88,20 +90,20 @@ const Input = styled.input`
   width: 200px;
   height: 30px;
   margin: 10px;
-  border-bottom: solid 1px #ffffff8f;
+  border-bottom: solid 1px ${({ theme }) => theme.grayColors.pewter};
   outline: none;
-  background: #33393f;
+  background: ${({ theme }) => theme.grayColors.charcoal};
   text-align: center;
   color: white;
   font-size: 23px;
   transition: background 0.3s;
 
   &:hover {
-    background: #464653;
+    background: ${({ theme }) => theme.grayColors.pewter};
   }
 
   &:focus {
-    background: #393943;
+    background: ${({ theme }) => theme.grayColors.iron};
   }
 `;
 

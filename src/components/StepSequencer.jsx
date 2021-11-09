@@ -15,7 +15,7 @@ function StepSequencer() {
   const dispatch = useDispatch();
 
   const newTrack = tracks[currentTrack];
-  const { codeName, stepsMap, midiSteps, name } = newTrack;
+  const { codeName, bars, steps, name } = newTrack;
 
   Tone.Transport.bpm.value = bpm;
 
@@ -45,36 +45,36 @@ function StepSequencer() {
   }, [startProgressBar, bpm, repeat]);
 
   function updateStepTrack(codes, stepIndex) {
-    const newMidiStep = [...midiSteps];
-    const newStep = [...stepsMap];
+    const newBars = [...bars];
+    const newStep = [...steps];
     let setIndexSet = stepIndex;
 
     if (currentPart === 'B') {
       setIndexSet = setIndexSet + 32;
     }
 
-    newStep[codes].steps[setIndexSet] =
-      newStep[codes].steps[setIndexSet] === 0 ? 1 : 0;
+    newStep[codes].step[setIndexSet] =
+      newStep[codes].step[setIndexSet] === 0 ? 1 : 0;
 
-    const midiBox = Math.floor(setIndexSet / 4);
+    const barIndex = Math.floor(setIndexSet / 4);
 
-    const targetMidi = [];
+    const targetBar = [];
     newStep.map((note) => {
-      const { steps } = note;
-      const targetSteps = steps.slice(midiBox * 4, midiBox * 4 + 4);
+      const { step } = note;
+      const targetSteps = step.slice(barIndex * 4, barIndex * 4 + 4);
 
-      return targetMidi.push(...targetSteps);
+      return targetBar.push(...targetSteps);
     });
 
-    if (targetMidi.indexOf(1) >= 0) {
-      newMidiStep[midiBox] = 1;
+    if (targetBar.indexOf(1) >= 0) {
+      newBars[barIndex] = 1;
     } else {
-      newMidiStep[midiBox] = 0;
+      newBars[barIndex] = 0;
     }
 
     sampler[name].triggerAttackRelease(codeName[codes], 1);
 
-    newTrack.midiSteps = newMidiStep;
+    newTrack.bars = newBars;
 
     dispatch(updateStep({ currentTrack, newTrack }));
   }
@@ -85,15 +85,14 @@ function StepSequencer() {
   }
 
   function resetStep() {
-    const resetMidiStep = Array(16).fill(0);
-    const resetStep = [...stepsMap];
+    const resetBars = Array(16).fill(0);
+    const resetStep = [...steps];
 
     resetStep.forEach((codeSteps) => {
-      codeSteps.steps = [];
-      codeSteps.steps = Array(64).fill(0);
+      codeSteps.step = Array(64).fill(0);
     });
 
-    newTrack.midiSteps = resetMidiStep;
+    newTrack.bars = resetBars;
     dispatch(updateStep({ currentTrack, newTrack }));
   }
 
@@ -117,12 +116,12 @@ function StepSequencer() {
             )}
           </ProgressBarContainer>
 
-          {stepsMap &&
-            stepsMap.map((track, index) => {
+          {steps &&
+            steps.map((track, index) => {
               const stepPart =
                 currentPart === 'A'
-                  ? track.steps.slice(0, 32)
-                  : track.steps.slice(32, 64);
+                  ? track.step.slice(0, 32)
+                  : track.step.slice(32, 64);
 
               return (
                 <SoundBox key={`track-${index}`}>
