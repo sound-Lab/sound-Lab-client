@@ -17,7 +17,8 @@ const Wrapper = styled.div`
   top: 0%;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(37, 37, 37, 0.397);
+  background-color: ${({ theme }) => theme.grayColors.black};
+  opacity: 0.3;
 
   .loader {
     width: 30px;

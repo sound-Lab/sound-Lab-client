@@ -48,11 +48,11 @@ const SoundColumns = styled.div`
 `;
 
 const NoteName = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.grayColors.white};
 `;
 
 const SoundBox = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.grayColors.white};
   cursor: pointer;
 `;
 

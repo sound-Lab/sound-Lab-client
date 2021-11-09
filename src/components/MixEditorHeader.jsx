@@ -92,10 +92,10 @@ function MixEditorHeader() {
   function handleStart() {
     tracks.forEach((track) => {
       if (!track.mute) {
-        const { codeName, stepsMap, name } = track;
+        const { codeName, steps, name } = track;
 
-        stepsMap.forEach((track, index) => {
-          const step = track.steps[stepIndex.current];
+        steps.forEach((track, index) => {
+          const step = track.step[stepIndex.current];
 
           if (step === 1) {
             sampler[name].triggerAttackRelease(codeName[index], 0.5);
@@ -183,15 +183,15 @@ function MixEditorHeader() {
 const Wrapper = styled.header`
   width: 100vw;
   height: 100px;
-  background-color: #33393f;
-  border-bottom: solid 0.1px #ffffff26;
+  background-color: ${({ theme }) => theme.grayColors.anchor};
+  border-bottom: solid 0.1px ${({ theme }) => theme.grayColors.shadow};
 `;
 
 const EditorHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: -1px 2px 10px 0px #0c0c0c3b;
+  box-shadow: -1px 2px 10px 0px ${({ theme }) => theme.grayColors.anchor};
 `;
 
 const Title = styled.div`
@@ -202,9 +202,9 @@ const Title = styled.div`
   height: 30px;
   margin: 0 auto;
   outline: none;
-  color: white;
+  color: ${({ theme }) => theme.grayColors.white};
   font-size: 18px;
-  border-bottom: solid 0.5px #ffffff67;
+  border-bottom: solid 0.5px ${({ theme }) => theme.grayColors.greige};
   transition: border 0.3s;
 
   &:hover {
@@ -216,14 +216,14 @@ const Exit = styled.div`
   margin: 15px;
   width: 40px;
   text-align: center;
-  color: white;
+  color: ${({ theme }) => theme.grayColors.white};
   font-size: 17px;
-  border-right: solid 1px #969696;
+  border-right: solid 1px ${({ theme }) => theme.grayColors.pewter};
   transition: border-right-color 0.3s, color 0.3s;
 
   &:hover {
-    color: #c20101;
-    border-right: solid 2px #c20101;
+    color: ${({ theme }) => theme.mainColor.orangeRed};
+    border-right: solid 2px ${({ theme }) => theme.mainColor.orangeRed};
   }
 `;
 

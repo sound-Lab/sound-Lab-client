@@ -41,7 +41,8 @@ const ModalShadow = styled.div`
   top: 0px;
   width: 100%;
   height: 100%;
-  background-color: #585858;
+  background-color: ${({ theme }) => theme.grayColors.greige};
+
   opacity: 0.5;
 `;
 
@@ -57,7 +58,8 @@ const ModalContainer = styled.div`
   width: 500px;
   height: calc(100% - 200px);
   border-radius: 10px;
-  background-color: #191b20;
+  background-color: ${({ theme }) => theme.grayColors.charcoal};
+
   color: white;
   transform: translate(-50%, -50%) scale(0);
   animation: show 0.25s ease forwards;
@@ -76,7 +78,7 @@ const CloseButton = styled.button`
   width: 50px;
   height: 50px;
   color: white;
-  background-color: #191b20;
+  background-color: ${({ theme }) => theme.grayColors.charcoal};
 `;
 
 export default Modal;

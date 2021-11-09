@@ -15,7 +15,6 @@ function Error({ error }) {
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vw;
-  background: #fff;
 `;
 
 const StyledLinkButton = styled(Link)`
@@ -23,7 +22,6 @@ const StyledLinkButton = styled(Link)`
   height: 45px;
   display: inline-block;
   border-radius: 8px;
-  background-color: #2f49d1;
 `;
 
 Error.propTypes = {
