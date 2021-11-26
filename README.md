@@ -26,8 +26,6 @@
 - [**기술적 챌린지**](##기술적-챌린지)
 - [**프로젝트를 마치면서**](##프로젝트를-마치면서)
 
-<br>
-
 ---
 
 <br>
@@ -35,8 +33,6 @@
 ## **Motivation**
 
 **Sound LAB**은 작곡 서비스입니다. 과거에 참여했던 팀 프로젝트에서 WebRTC를 이용하여 서비스를 구현했었습니다. 프로젝트를 하면서 Web API에 대해 자연스럽게 흥미가 생겼고 다양한 Web API에 도전해보고 싶었습니다. 평소 음악을 즐겨듣고 디제잉에 관심이 있어 오디오와 관련된 Web API를 조사해보다 Web Audio API를 이용한 사운드랩을 구상하게 되었습니다.
-
-<br>
 
 ---
 
@@ -57,8 +53,6 @@
   - 기능 구현
   - 피드백 반영 및 문서 작성
 
-<br>
-
 ---
 
 <br>
@@ -67,8 +61,6 @@
 
 - 기능별로 feature 브랜치 생성 후 개발
 - 단위 기능 완료 후 master 브랜치로 병합
-
-<br>
 
 ---
 
@@ -88,8 +80,6 @@
 
   URL: https://api.soundlab.agency
 
-<br>
-
 ---
 
 <br>
@@ -107,8 +97,6 @@
 
 - 화면 하단 시퀀서 블럭을 클릭하면서 곡을 편집합니다.
 - 곡을 저장한 후 URL을 통해 공유할 수 있습니다.
-
-<br>
 
 ---
 
@@ -149,8 +137,6 @@
 - **URL** 공유 기능
 
   곡을 저장했을 경우 URL을 통해 곡 편집 페이지로 접근 가능합니다.
-
-<br>
 
 ---
 
@@ -195,8 +181,6 @@
     $ npm run dev
     ```
 
-<br>
-
 ---
 
 <br>
@@ -223,24 +207,23 @@
 
     곡 편집에 따라 빈번하게 일어나는 트랙 상태 변화를 공유하고 있는 컴포넌트가 다수 존재하기에 전역 상태 관리의 필요성을 느꼈고 Redux를 도입했습니다.
 
-    React 컴포넌트와 비동기 요청 로직의 관심사 분리를 위해 Middleware로 Redux-saga를 도입하였습니다. saga를 선택한 이유는 비동기 요청을 동기적으로 작성할 수 있다는 점 그리고 사이드 이팩트를 순수하게 관리할 수 있다는 점에서 선택했습니다.
+    React 컴포넌트와 비동기 요청 로직의 관심사 분리를 위해 Middleware로 Redux-saga를 도입하였습니다. saga를 선택한 이유는 진입 장벽이 높지만 Generator 함수를 이용해 액션을 순수하게 유지할 수 있다는 점 그리고 비동기 요청을 동기적으로 작성할 수 있다는 점에서 선택하게 되었습니다.
 
-  - Tone.js
+  - Tone.js VS P5.js
 
-    곡 재생, 음원 파일 로드 등 오디오와 관련된 기능을 구현하기 위해 선택했습니다.
-    Tone.js는 음악 제작을 위한 프레임워크로 Web audio API를 기반으로 만들어졌습니다. 기능 구현에 관련된 다양한 메서드와 자료를 제공한다고 판단하여 선택했습니다.
+    오디오와 관련된 기능을 효율적으로 구현하기 위해 Web audio API와 관련된 프레임워크 혹은 라이브러리를 선택해야했습니다.
 
-    Web audio API 관련 메서드를 제공하는 프레임워크 중 p5.js를 선택하지 않은 이유는 p5.js는 소리 시각화 기능에 특화되어있어 프로젝트의 목적에 부합하지 않다고 판단하여 선택하지 않았습니다.
+    - Tone.js는 음악 제작을 위한 프레임워크로 Web audio API를 기반으로 만들어졌습니다. 기능 구현에 관련된 다양한 메서드와 자료를 제공합니다.
 
-<br>
+    - P5.js는 Canvas API를 손쉽게 사용할 수 있는 라이브러리로 HTML 오디오 요소를 사용할 수 있습니다. 오디오 관련 메서드를 제공하지만 주된 기능이 아니며 오디오 시각화에 특화되어 있습니다.
+
+    두 개의 프레임워크를 비교했을 때 Tone.js가 프로멕트 목적에 부합한다고 판단하여 선택했습니다.
 
 ---
 
 <br>
 
 ## **기술적 챌린지**
-
-<br>
 
 - ### **음악 객체 구조 구성**
 
@@ -251,35 +234,44 @@
     하나의 음악 객체는 tracks 배열로 구성되어 있고, 각 트랙은 마디 배열과 스탭 배열 그리고 선택된 악기의 코드 정보가 들어있습니다.
 
     트랙 구조를 구현하기 위해 design pattern 중 factory pattern을 활용하여 트랙 객체 생성 환경을 단순화했습니다.
-    util함수를 작성하여 트랙 객체 생성. 각 트랙이 동일한 형태를 유지할 수 있도록 했습니다.
 
-    생성된 steps 배열은 유저의 입력에 따라 0, 1으로 **추상화**하여 사용했습니다.
-
-    > 1. factory 패턴을 차용하여 util 함수 작성
-    > 2. 트랙 추가 시 해당 util 함수 실행. 트랙에 필요한 값 추가
+    > 1. factory 패턴을 이용해 TracksFactory 형성
+    > 2. 트랙 추가 시 해당 TracksFactory를 이용해 트랙에 필요한 steps 형성
 
       <details>
       <summary><span>트랙 생성 코드</summary>
 
     ```jsx
-    function initialSteps() {
-      const tracks = {};
-
-      tracks.codeName = codes;
-      tracks.bars = Array(16).fill(0);
-      tracks.steps = codes.map((code) => ({
-        code,
-        stepList: Array(64).fill(0),
-      }));
-
-      return tracks;
+    function Tracks(tracks) {
+      this.codeName = tracks.codeName;
+      this.bars = tracks.bars || Array(16).fill(0);
+      this.steps =
+        tracks.steps ||
+        tracks.codes.map((code) => ({
+          name: code,
+          step: Array(64).fill(0),
+        }));
     }
+
+    function TracksFactory() {}
+
+    TracksFactory.prototype.tracksClass = Tracks;
+    TracksFactory.prototype.createSteps = function (tracks) {
+      return new this.tracksClass(tracks);
+    };
+
+    const stepsFactory = new TracksFactory();
+
+    const tracks = stepsFactory.createSteps({
+      type: instrument[0].name,
+      codes,
+    });
     ```
 
       </details>
 
       <br>
-    위와 같은 구조로 트랙 객체 생성 환경을 단순화할 수 있었지만 factory pattern을 제대로 활용하지 않아 아쉬움이 남습니다. 하지만 design pattern에 대해 고민할 수 있었습니다.
+    위와 같은 구조로 트랙 객체 생성 환경을 단축할 수 있었습니다. 선택되는 악기에 따라 다른 환경을 제공해 하나의 생성자로 다양한 트랙 구조를 형성할 수 있었습니다.
 
   <br>
 
@@ -316,7 +308,6 @@
     위와 같은 구조로 별도의 데이터 구현없이 재생 시간을 시각화할 수 있었습니다.
 
 <br>
-<br>
 
 - ### **저장**
 
@@ -342,7 +333,6 @@
     위와 같은 변경으로 곡 편집 화면에 진입했을 때 로딩에 1초 정도의 시간이 소요되었으나 기존에 트랙을 추가할 때마다 악기 음원 sample 객체를 로드하기 위해 소요되던 시간을 절감할 수 있었고 URL을 통한 접근 그리고 새로고침에 대응할 수 있게 되었습니다.
 
 <br>
-<br>
 
 - ### 자동 재생
 
@@ -352,7 +342,7 @@
 
   - 원인
 
-    재생이 되지 않았던 이유는 Chrome 브라우저에서 비교적 최근에 개정한 Chrome 71 auto play policy 때문이었습니다. 내용은 유저의 action(ex. click, key down)이 없으면 Audio Context의 상태가 suspended로 생성되어 자동 재생이 불가능하다는 것이었습니다.
+    재생이 되지 않았던 이유는 Chrome 브라우저에서 비교적 최근에 개정한 [Chrome 71 auto play policy](https://sites.google.com/a/chromium.org/dev/audio-video/autoplay) 때문이었습니다. 내용은 유저의 action(ex. click, key down)이 없으면 Audio Context의 상태가 suspended로 생성되어 자동 재생이 불가능하다는 것이었습니다.
 
     당시 play button 클릭 이전 Audio Context를 재생할 수 있는 상태로 변경해주는 로직이 없다는 사실을 파악했습니다.
 
@@ -367,8 +357,6 @@
 
     위와 같은 변경으로 Chrome 브라우저에서도 저장된 곡을 바로 재생할 수 있도록 대응할 수 있었습니다. 다양한 브라우저 환경에서 테스트하고 대응해야한다는 점을 되새겼습니다.
 
-<br>
-
 ---
 
 <br>
@@ -376,3 +364,5 @@
 ## **프로젝트를 마치면서**
 
 - 기획부터 개발까지 혼자 해야 하는 상황에 스트레스를 받고 개발 일정이 더디게 진행되면 초조함에 잠 못 들기도 했습니다. 개인 프로젝트를 진행하면서 팀 프로젝트와 다르게 모든 문제를 스스로 해결해나가야 한다는 점이 힘들때도 있고 동료들과 함께 문제를 해결하면서 협력하던 때가 그립기도 했습니다. 하지만 직면한 문제에 대해 다양한 관점으로 접근해보려 했던 경험이 개인적 성장에 많은 도움이 되었습니다.
+
+- 애자일 스프린트 기간에 테스트 케이스를 작성하지 못해 아쉽습니다. 지속해서 유닛, 리덕스 리듀서 그리고 E2E 테스트를 작성해 안정적인 서비스를 만들 예정입니다.

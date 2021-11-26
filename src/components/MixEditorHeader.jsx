@@ -161,7 +161,6 @@ function MixEditorHeader() {
             onClick={handlePlay}
             width={50}
             height={35}
-            buttonColor={'black'}
             disabled={isPlaying ? true : false}
           />
           <StyledPlayButton
@@ -170,7 +169,6 @@ function MixEditorHeader() {
             onClick={handlePlay}
             width={50}
             height={35}
-            buttonColor={'black'}
             disabled={isPlaying ? false : true}
           />
         </div>
