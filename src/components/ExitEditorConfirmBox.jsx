@@ -12,6 +12,7 @@ function ExitEditorConfirmBox({ onSave, onDelete }) {
   function handleSave() {
     onSave(true);
   }
+
   return (
     <Wrapper>
       <TextBox>

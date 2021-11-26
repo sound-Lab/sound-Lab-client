@@ -1,5 +1,6 @@
 const mainColor = {
   navyBlue: '#005ac6',
+  red: '#ff0000',
   orangeRed: '#fa6d33',
   selectiveYellow: '#ffb200',
   lightSalmon: '#ffa09d',

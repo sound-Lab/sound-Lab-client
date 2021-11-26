@@ -55,13 +55,18 @@ const Wrapper = styled.div`
   margin: 5px;
   height: 30px;
   border-bottom: solid 0.5px ${({ theme }) => theme.grayColors.pewter};
-  color: ${({ theme }) => theme.grayColors.greige};
+  color: ${({ theme }) => theme.grayColors.lightGray};
+  transition: border-bottom 0.3s;
+
+  &:hover {
+    border-bottom: solid 0.5px ${({ theme }) => theme.grayColors.white};
+  }
 `;
 
 const Input = styled.input`
   width: 130px;
   outline: none;
-  background: ${({ theme }) => theme.grayColors.charcoal};
+  background: ${({ theme }) => theme.grayColors.steel};
   text-align: center;
   color: ${({ theme }) => theme.grayColors.white};
   font-size: 14px;

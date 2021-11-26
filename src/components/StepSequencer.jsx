@@ -13,7 +13,6 @@ function StepSequencer() {
   const [startProgressBar, setStartProgressBar] = useState(false);
   const [progressTime, setProgressTime] = useState(8);
   const dispatch = useDispatch();
-
   const newTrack = tracks[currentTrack];
   const { codeName, bars, steps, name } = newTrack;
 
@@ -250,7 +249,7 @@ const ProgressBar = styled.div`
   width: 100%;
   height: 10px;
   border-bottom: solid 0.1px #ffffff26;
-  background: #ff0404;
+  background: ${({ theme }) => theme.mainColor.red};
   animation: ${(props) => {
     return `progressAnimationStrike ${props.time}s linear`;
   }};

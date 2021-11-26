@@ -52,15 +52,17 @@ const StyledButton = styled.button`
 
 Button.propTypes = {
   type: PropTypes.string,
-  id: PropTypes.any,
+  id: PropTypes.string,
   onClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
-  buttonColor: PropTypes.oneOf(Object.values(theme.mainColor)),
+  buttonColor: PropTypes.oneOf(
+    Object.values(theme.mainColor, theme.grayColors),
+  ),
   height: PropTypes.number,
   width: PropTypes.number,
   disabled: PropTypes.bool,
   fontSize: PropTypes.number,
-  className: PropTypes.any,
+  className: PropTypes.string,
 };
 
 Button.defaultProps = {

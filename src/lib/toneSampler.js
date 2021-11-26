@@ -17,30 +17,48 @@ export function toneSampler(tool) {
   return sampler;
 }
 
+function Tracks(tracks) {
+  this.codeName = tracks.codeName;
+  this.bars = tracks.bars || Array(16).fill(0);
+  this.steps =
+    tracks.steps ||
+    tracks.codes.map((code) => ({
+      name: code,
+      step: Array(64).fill(0),
+    }));
+}
+
+function TracksFactory() {}
+
+TracksFactory.prototype.tracksClass = Tracks;
+TracksFactory.prototype.createSteps = function (tracks) {
+  return new this.tracksClass(tracks);
+};
+
+const stepsFactory = new TracksFactory();
+
 export function initialSteps(instrument) {
   if (!instrument) {
     return;
   }
 
-  const tracks = {};
   const { codes } = instrument[0];
-
   if (instrument[0].name === 'piano') {
     const pianoCode = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5'];
-    tracks.codeName = pianoCode;
-    tracks.bars = Array(16).fill(0);
-    tracks.steps = pianoCode.map((code) => ({
-      name: code,
-      step: Array(64).fill(0),
-    }));
-  } else {
-    tracks.codeName = codes;
-    tracks.bars = Array(16).fill(0);
-    tracks.steps = codes.map((code) => ({
-      name: code,
-      step: Array(64).fill(0),
-    }));
+    const tracks = stepsFactory.createSteps({
+      codeName: pianoCode,
+      type: instrument[0].name,
+      codes: pianoCode,
+    });
+
+    return tracks;
   }
+
+  const tracks = stepsFactory.createSteps({
+    codeName: codes,
+    type: instrument[0].name,
+    codes,
+  });
 
   return tracks;
 }

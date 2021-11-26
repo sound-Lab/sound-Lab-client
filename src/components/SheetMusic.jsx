@@ -34,8 +34,8 @@ function SheetMusic() {
     <Wrapper>
       <Header>
         {initialStep.map((step, index) => {
-          if (index % 16 === 0) {
-            return <div key={index}>{Math.floor(index / 16) + 1}</div>;
+          if (index % 4 === 0) {
+            return <div key={index}>{Math.floor(index / 4) + 1}</div>;
           }
         })}
       </Header>
@@ -92,7 +92,7 @@ const Header = styled.div`
     color: ${({ theme }) => theme.grayColors.white};
     font-weight: 300;
     font-size: 14px;
-    border-left: solid 0.1px ${({ theme }) => theme.grayColors.shadow};
+    border-left: solid 0.1px ${({ theme }) => theme.grayColors.greige};
   }
 `;
 
@@ -104,7 +104,7 @@ const ProgressBarContainer = styled.div`
 
 const ProgressBar = styled.div`
   height: 10px;
-  background: ${({ theme }) => theme.mainColor.orangeRed};
+  background: ${({ theme }) => theme.mainColor.red};
   border-bottom: solid 0.1px ${({ theme }) => theme.grayColors.shadow};
   animation: ${(props) => `progressAnimationStrike ${props.time}s linear`};
   animation-iteration-count: infinite;
@@ -132,7 +132,8 @@ const Sheet = styled.div`
 const SheetMidi = styled.div`
   width: 1.56%;
   height: 100%;
-  border-left: solid 0.25px ${({ theme }) => theme.grayColors.shadowDark};
+  border-left: solid 0.25px ${({ theme }) => theme.grayColors.darkGray};
+  border-bottom: solid 0.25px ${({ theme }) => theme.grayColors.darkGray};
 `;
 
 export default React.memo(SheetMusic);

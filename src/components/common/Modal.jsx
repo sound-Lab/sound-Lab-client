@@ -59,8 +59,7 @@ const ModalContainer = styled.div`
   height: calc(100% - 200px);
   border-radius: 10px;
   background-color: ${({ theme }) => theme.grayColors.charcoal};
-
-  color: white;
+  color: ${({ theme }) => theme.grayColors.white};
   transform: translate(-50%, -50%) scale(0);
   animation: show 0.25s ease forwards;
 
@@ -77,7 +76,7 @@ const CloseButton = styled.button`
   right: 10px;
   width: 50px;
   height: 50px;
-  color: white;
+  color: ${({ theme }) => theme.grayColors.white};
   background-color: ${({ theme }) => theme.grayColors.charcoal};
 `;
 
