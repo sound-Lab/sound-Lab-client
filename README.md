@@ -13,7 +13,7 @@
 
 ## **Contents**
 
-- [**Sound LAB 🎧**](#Sound-LAB🎧)
+- [**Sound LAB**](##Sound-LAB)
 - [**Contents**](##Contents)
 - [**Motivation**](##Motivation)
 - [**작업 기간**](##작업-기간)
