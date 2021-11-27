@@ -1,10 +1,10 @@
-# [Sound LAB🎧](https://www.soundlab.agency/)
+# Sound LAB
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/be33125c-3e5f-41b0-93b4-a2d9e3fb0931/deploy-status)](https://app.netlify.com/sites/awesome-tesla-be23da/deploys)
 
 <img src="./readme.asset/soundLabPlay.gif" alt="intro">
 
-- **Sound LAB**은 시퀀서를 웹용으로 제작한 작곡 서비스입니다.
+- [**Sound LAB 🎧**](https://www.soundlab.agency/)은 시퀀서를 웹용으로 제작한 작곡 서비스입니다.ch
 - **간단한 조작법**으로 손쉽게 작곡할 수 있도록 제작되었습니다.
 
 ---
