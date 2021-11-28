@@ -1,10 +1,10 @@
-# [Sound LAB🎧](https://www.soundlab.agency/)
+# Sound LAB
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/be33125c-3e5f-41b0-93b4-a2d9e3fb0931/deploy-status)](https://app.netlify.com/sites/awesome-tesla-be23da/deploys)
 
 <img src="./readme.asset/soundLabPlay.gif" alt="intro">
 
-- **Sound LAB**은 시퀀서를 웹용으로 제작한 작곡 서비스입니다.
+- [**Sound LAB 🎧**](https://www.soundlab.agency/)은 시퀀서를 웹용으로 제작한 작곡 서비스입니다.
 - **간단한 조작법**으로 손쉽게 작곡할 수 있도록 제작되었습니다.
 
 ---
@@ -32,7 +32,9 @@
 
 ## **Motivation**
 
-**Sound LAB**은 작곡 서비스입니다. 과거에 참여했던 팀 프로젝트에서 WebRTC를 이용하여 서비스를 구현했었습니다. 프로젝트를 하면서 Web API에 대해 자연스럽게 흥미가 생겼고 다양한 Web API에 도전해보고 싶었습니다. 평소 음악을 즐겨듣고 디제잉에 관심이 있어 오디오와 관련된 Web API를 조사해보다 Web Audio API를 이용한 사운드랩을 구상하게 되었습니다.
+[**Sound LAB**](https://www.soundlab.agency/)은 작곡 서비스입니다. 과거에 참여했던 팀 프로젝트에서 WebRTC를 이용하여 서비스를 구현했었습니다. 프로젝트를 하면서 Web API에 대해 자연스럽게 흥미가 생겼고 다양한 Web API에 도전해보고 싶었습니다. 평소 음악을 즐겨듣고 디제잉에 관심이 있어 오디오와 관련된 Web API를 조사해보다 Web Audio API를 이용한 사운드랩을 구상하게 되었습니다.
+
+<br>
 
 ---
 
@@ -44,7 +46,7 @@
 
   기획 및 디자인 작업
 
-  - [mock up](https://www.figma.com/file/cwVxZc79tIkGxtGttjPoRe/Sound-Lab?node-id=0%3A1)
+  - [Mock up](https://www.figma.com/file/cwVxZc79tIkGxtGttjPoRe/Sound-Lab?node-id=0%3A1)
 
 - ### 2, 3주차
 
@@ -53,14 +55,7 @@
   - 기능 구현
   - 피드백 반영 및 문서 작성
 
----
-
 <br>
-
-## **Git Work Flow**
-
-- 기능별로 feature 브랜치 생성 후 개발
-- 단위 기능 완료 후 master 브랜치로 병합
 
 ---
 
@@ -80,6 +75,8 @@
 
   URL: https://api.soundlab.agency
 
+<br>
+
 ---
 
 <br>
@@ -97,6 +94,8 @@
 
 - 화면 하단 시퀀서 블럭을 클릭하면서 곡을 편집합니다.
 - 곡을 저장한 후 URL을 통해 공유할 수 있습니다.
+
+<br>
 
 ---
 
@@ -137,6 +136,8 @@
 - **URL** 공유 기능
 
   곡을 저장했을 경우 URL을 통해 곡 편집 페이지로 접근 가능합니다.
+
+<br>
 
 ---
 
@@ -181,6 +182,8 @@
     $ npm run dev
     ```
 
+<br>
+
 ---
 
 <br>
@@ -218,6 +221,8 @@
     - P5.js는 Canvas API를 손쉽게 사용할 수 있는 라이브러리로 HTML 오디오 요소를 사용할 수 있습니다. 오디오 관련 메서드를 제공하지만 주된 기능이 아니며 오디오 시각화에 특화되어 있습니다.
 
     두 개의 프레임워크를 비교했을 때 Tone.js가 프로멕트 목적에 부합한다고 판단하여 선택했습니다.
+
+<br>
 
 ---
 
@@ -356,6 +361,8 @@
   - 결과
 
     위와 같은 변경으로 Chrome 브라우저에서도 저장된 곡을 바로 재생할 수 있도록 대응할 수 있었습니다. 다양한 브라우저 환경에서 테스트하고 대응해야한다는 점을 되새겼습니다.
+
+<br>
 
 ---
 
